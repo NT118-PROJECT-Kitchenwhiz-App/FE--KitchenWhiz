@@ -140,7 +140,7 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/edittext"
         android:ems="10"
-        android:hint="Password"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColorHint="#C3AFEB"
