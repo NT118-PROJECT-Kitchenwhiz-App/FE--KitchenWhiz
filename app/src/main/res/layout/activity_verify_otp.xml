@@ -57,6 +57,7 @@
         android:layout_marginTop="184dp"
         android:background="@drawable/edittext"
         android:hint="OTP"
+        android:textColor="#5b37a0"
         android:padding="12dp"
         android:textColorHint="#C3AFEB"
         app:layout_constraintEnd_toEndOf="parent"

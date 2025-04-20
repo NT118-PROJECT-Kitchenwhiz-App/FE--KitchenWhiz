@@ -13,6 +13,9 @@
         android:theme="@style/Theme.KitchenWhiz"
         tools:targetApi="31">
         <activity
+            android:name=".home"
+            android:exported="false" />
+        <activity
             android:name=".fillemail"
             android:exported="false" />
         <activity
