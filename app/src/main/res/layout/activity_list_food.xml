@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#E9DEF2">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="90dp">
+
+            <EditText
+                android:id="@+id/home_search"
+                android:layout_width="366dp"
+                android:layout_height="39dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/edittext"
+                android:drawableRight="@drawable/search_icon_2048x2048_cmujl7en"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:fontFamily="@font/regular_font"
+                android:hint="Look up for new recipes..."
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingEnd="15dp"
+                android:textColor="#5b37a0"
+                android:textColorHint="#CBB9EE"
+
+                android:textSize="20dp"
+                android:textStyle="italic"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ListView
+            android:id="@+id/listFood"
+            android:layout_width="match_parent"
+            android:divider="@null"
+            android:dividerHeight="0dp"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
