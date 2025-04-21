@@ -137,16 +137,17 @@
 
                 <TextView
                     android:id="@+id/txthome_food"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="171dp"
+                    android:layout_height="29dp"
                     android:layout_marginTop="12dp"
-                    android:text="Food"
                     android:fontFamily="@font/regular_font"
-                    android:textSize="26dp"
+                    android:text="Food"
+                    android:textAllCaps="true"
                     android:textColor="@color/white"
+                    android:textSize="26dp"
                     android:textStyle="bold"
                     app:layout_constraintEnd_toEndOf="@+id/rcmrandomfood"
-                    app:layout_constraintHorizontal_bias="0.091"
+                    app:layout_constraintHorizontal_bias="0.151"
                     app:layout_constraintStart_toStartOf="@+id/rcmrandomfood"
                     app:layout_constraintTop_toBottomOf="@+id/txtwhattoeat" />
 
@@ -307,6 +308,7 @@
                     android:fontFamily="@font/font_title"
                     android:letterSpacing="0.2"
                     android:text="Gửi Thắc Mắc"
+                    android:textAllCaps="true"
                     android:textColor="#ff80b7"
                     android:textSize="20dp"
                     android:textStyle="bold"
