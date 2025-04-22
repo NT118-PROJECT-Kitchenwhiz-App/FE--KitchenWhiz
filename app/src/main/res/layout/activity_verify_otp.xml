@@ -3,15 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
+    android:fitsSystemWindows="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".verify_otp">
 
     <View
         android:id="@+id/bg"
-        android:layout_width="418dp"
-        android:layout_height="569dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_marginTop="172dp"
+        android:fitsSystemWindows="true"
         android:background="@drawable/bg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.571"
@@ -43,7 +45,7 @@
         android:id="@+id/logo"
         android:layout_width="309dp"
         android:layout_height="315dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="460dp"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="@+id/bg"
         app:layout_constraintEnd_toEndOf="parent"
