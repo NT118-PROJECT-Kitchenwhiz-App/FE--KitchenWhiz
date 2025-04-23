@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E9DEF2"
+    tools:context=".add_food">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/uploadphotos" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/font_title"
+                android:hint="Tên món ăn"
+                android:padding="15dp"
+                android:textColor="#7A6ED3"
+                android:textColorHint="#C3AFEB"
+                android:textSize="25dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:fontFamily="@font/regular_font"
+                android:hint="Hãy chia sẻ cho chúng tôi những điều thú vị về món ăn của bạn. Tôi cá rằng mọi người sẽ rất thích nó đấy <3"
+                android:padding="20dp"
+                android:textColor="#7A6ED3"
+                android:textColorHint="#C3AFEB"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="150dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/regular_font"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:text="Khẩu phần ăn"
+                        android:textColor="#7A6ED3"
+                        android:textSize="23dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/regular_font"
+                        android:gravity="center"
+                        android:text="Thời gian nấu"
+                        android:textColor="#7A6ED3"
+                        android:textSize="23dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginTop="10dp"
+                        android:fontFamily="@font/regular_font"
+                        android:gravity="center"
+                        android:hint="2 người"
+                        android:layout_marginRight="20dp"
+                        android:padding="5dp"
+                        android:textColor="#7A6ED3"
+                        android:textColorHint="#C3AFEB"
+                        android:textSize="23dp" />
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="70dp"
+                        android:layout_marginLeft="20dp"
+                        android:fontFamily="@font/regular_font"
+                        android:gravity="center"
+                        android:hint="60 phút"
+                        android:layout_marginRight="20dp"
+                        android:textColor="#7A6ED3"
+                        android:textColorHint="#C3AFEB"
+                        android:textSize="23dp"/
+                </LinearLayout>
+
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nguyên liệu"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:textColor="#7A6ED3"
+                android:fontFamily="@font/regular_font"
+                android:textSize="27dp"
+                android:textStyle="bold"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="150dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="Tên nguyên liệu"
+                    android:textColor="#7A6ED3"/>
+
+                <EditText
+                    android:layout_width="100dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="Số lượng"
+                    android:textColor="#7A6ED3"/>
+                <EditText
+                    android:layout_width="150dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="Đơn vị"
+                    android:textColor="#7A6ED3"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="150dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="Thịt gà"
+                    android:textColor="#7A6ED3"/>
+
+                <EditText
+                    android:layout_width="100dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="200"
+                    android:textColor="#7A6ED3"/>
+                <EditText
+                    android:layout_width="150dp"
+                    android:textColorHint="#C3AFEB"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:padding="12dp"
+                    android:layout_height="match_parent"
+                    android:hint="gam"
+                    android:textColor="#7A6ED3"/>
+            </LinearLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="+ Nguyên liệu"
+                android:textColor="#7A6ED3"
+                android:layout_marginTop="20dp"
+                android:textSize="22dp"
+                android:fontFamily="@font/regular_font"
+                android:gravity="center"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Cách làm"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="25dp"
+                android:textColor="#7A6ED3"
+                android:fontFamily="@font/regular_font"
+                android:textSize="27dp"
+                android:textStyle="bold"/>
+            <EditText
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittext"
+                android:layout_marginRight="15dp"
+                android:layout_marginLeft="10dp"
+                android:hint="Hãy nêu chi tiết cách làm để mọi người cũng có thể nếm thử món ăn của bạn một cách trọn vẹn nhé!!!"
+                android:padding="20dp"
+                android:fontFamily="@font/regular_font"
+                android:textSize="20dp"
+                android:textColorHint="#C3AFEB"
+                android:textColor="#7A6ED3"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LƯU CÔNG THỨC"
+                android:background="@drawable/btnlogin"
+                android:textColor="@color/white"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:fontFamily="@font/regular_font"
+                android:layout_marginTop="30dp"
+                android:layout_marginRight="80dp"
+                android:layout_marginLeft="80dp"
+                android:layout_marginBottom="20dp"
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

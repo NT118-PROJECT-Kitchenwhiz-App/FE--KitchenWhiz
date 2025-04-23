@@ -13,6 +13,9 @@
         android:theme="@style/Theme.KitchenWhiz"
         tools:targetApi="31">
         <activity
+            android:name=".add_food"
+            android:exported="false" />
+        <activity
             android:name=".food_imformation"
             android:exported="false" />
         <activity
