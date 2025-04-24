@@ -45,7 +45,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:fontFamily="@font/regular_font"
-                android:hint="Hãy chia sẻ cho chúng tôi những điều thú vị về món ăn của bạn. Tôi cá rằng mọi người sẽ rất thích nó đấy <3"
+                android:hint="Hãy chia sẻ cho chúng tôi những điều thú vị về món ăn của bạn. Tôi cá rằng mọi người sẽ rất thích nó đấy!"
                 android:padding="20dp"
                 android:textColor="#7A6ED3"
                 android:textColorHint="#C3AFEB"
@@ -113,7 +113,7 @@
                         android:layout_marginRight="20dp"
                         android:textColor="#7A6ED3"
                         android:textColorHint="#C3AFEB"
-                        android:textSize="23dp"/
+                        android:textSize="23dp"/>
                 </LinearLayout>
 
             </LinearLayout>
@@ -243,7 +243,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="80dp"
                 android:layout_marginLeft="80dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginBottom="20dp"/>
 
 
 

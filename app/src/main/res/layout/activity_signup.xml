@@ -91,18 +91,18 @@
         android:id="@+id/logo"
         android:layout_width="309dp"
         android:layout_height="315dp"
-        android:layout_marginBottom="480dp"
+        android:layout_marginBottom="516dp"
         android:src="@drawable/logo"
         app:layout_constraintBottom_toBottomOf="@+id/bg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.607"
+        app:layout_constraintHorizontal_bias="0.63"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
         android:id="@+id/signupemail"
         android:layout_width="347dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/edittext"
         android:fontFamily="@font/regular_font"
         android:hint="Email"
@@ -110,9 +110,8 @@
         android:textColor="#5b37a0"
         android:textColorHint="#C3AFEB"
         android:textSize="22dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logo" />
+        app:layout_constraintTop_toBottomOf="@+id/logo"
+        tools:layout_editor_absoluteX="23dp" />
 
     <EditText
         android:id="@+id/signupusername"
