@@ -31,7 +31,7 @@ TextView txtforgotpass, txtregister;
             btnlogin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tbname.getText() == null || tbpass.getText() == null){
+                    if (tbname.getText().toString().isEmpty() || tbpass.getText().toString().isEmpty()){
                         Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                         return;
                     }
