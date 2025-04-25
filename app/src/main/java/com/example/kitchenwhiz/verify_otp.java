@@ -50,8 +50,8 @@ public class verify_otp extends AppCompatActivity {
 
     private void mapping(){
         tbotp = findViewById(R.id.otp);
-        btncancel = findViewById(R.id.otpcancel_button);
-        btnverify = findViewById(R.id.verify_button);
+        btncancel = findViewById(R.id.fp_cancel);
+        btnverify = findViewById(R.id.fp_change);
         txtgetcode = findViewById(R.id.getotpagain);
     }
 }
