@@ -42,7 +42,7 @@ TextView txtforgotpass, txtregister;
             txtforgotpass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, forgot_password.class);
+                    Intent intent = new Intent(MainActivity.this, fillemail.class);
                     startActivity(intent);
                 }
             });
