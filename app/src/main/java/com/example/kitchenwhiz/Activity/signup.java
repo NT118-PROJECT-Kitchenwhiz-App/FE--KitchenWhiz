@@ -109,7 +109,7 @@ TextView txtlogin;
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String message = "";
-                int statusCode = response.code();
+                int statusCode = response.code();/*
                 try{
                     if (response.body() != null) {
                     String responsebody = response.body().string();
@@ -124,7 +124,7 @@ TextView txtlogin;
                 catch (Exception e){
                     Log.e("API Register", e.getMessage());
                     message = "Error";
-                }
+                }*/
                 if (response.isSuccessful()) {
                     Toast.makeText(signup.this, "Đăng ký thành công. Vui lòng kiểm tra mail (bao gồm mail rác) để xác nhận OTP", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(signup.this, verify_otp.class);
