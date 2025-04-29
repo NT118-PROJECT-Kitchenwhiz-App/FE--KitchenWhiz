@@ -1,7 +1,6 @@
-package com.example.kitchenwhiz;
+package com.example.kitchenwhiz.Activity;
 
 import android.os.Bundle;
-import android.widget.ListView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,26 +8,18 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import java.util.ArrayList;
+import com.example.kitchenwhiz.R;
 
-public class list_food extends AppCompatActivity {
-ListView listFood;
+public class add_food extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_list_food);
+        setContentView(R.layout.activity_add_food);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            listFood = findViewById(R.id.listFood);
-            ArrayList<dish> arrDish = new ArrayList<>();
-            while (arrDish.size()<10){
-                arrDish.add(new dish());
-            }
-            dishadapter dishadapter = new dishadapter(this, 0, arrDish);
-            listFood.setAdapter(dishadapter);
-
             return insets;
         });
     }

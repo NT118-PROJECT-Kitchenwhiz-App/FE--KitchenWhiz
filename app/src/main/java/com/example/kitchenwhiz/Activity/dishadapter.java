@@ -1,4 +1,4 @@
-package com.example.kitchenwhiz;
+package com.example.kitchenwhiz.Activity;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Adapter.dish;
 
 import java.util.ArrayList;
 import java.util.List;

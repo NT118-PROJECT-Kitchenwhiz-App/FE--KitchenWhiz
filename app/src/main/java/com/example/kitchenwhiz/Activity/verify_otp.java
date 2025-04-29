@@ -1,10 +1,11 @@
-package com.example.kitchenwhiz;
+package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,14 +14,17 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class forgot_password extends AppCompatActivity {
-Button btncancel, btnverify;
-EditText tbpass, tbcfpass;
+import com.example.kitchenwhiz.R;
+
+public class verify_otp extends AppCompatActivity {
+    EditText tbotp;
+    Button btncancel, btnverify;
+    TextView txtgetcode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_verify_otp);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -28,7 +32,7 @@ EditText tbpass, tbcfpass;
             btncancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(forgot_password.this, MainActivity.class);
+                    Intent intent = new Intent(verify_otp.this, signup.class);
                     startActivity(intent);
                 }
             });
@@ -36,12 +40,8 @@ EditText tbpass, tbcfpass;
             btnverify.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (tbpass.getText().toString().isEmpty()){
-                        Toast.makeText(forgot_password.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (!tbpass.getText().toString().equals(tbcfpass.getText().toString())){
-                        Toast.makeText(forgot_password.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                    if (tbotp.getText().toString().isEmpty()){
+                        Toast.makeText(verify_otp.this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
@@ -51,9 +51,9 @@ EditText tbpass, tbcfpass;
     }
 
     private void mapping(){
+        tbotp = findViewById(R.id.otp);
         btncancel = findViewById(R.id.fp_cancel);
         btnverify = findViewById(R.id.fp_change);
-        tbpass = findViewById(R.id.forgotpass_password);
-        tbcfpass = findViewById(R.id.forgotps_password);
+        txtgetcode = findViewById(R.id.getotpagain);
     }
 }

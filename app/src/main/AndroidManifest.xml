@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,31 +16,31 @@
         android:theme="@style/Theme.KitchenWhiz"
         tools:targetApi="31">
         <activity
-            android:name=".add_food"
+            android:name=".Activity.add_food"
             android:exported="false" />
         <activity
-            android:name=".food_imformation"
+            android:name=".Activity.food_imformation"
             android:exported="false" />
         <activity
-            android:name=".list_food"
+            android:name=".Activity.list_food"
             android:exported="false" />
         <activity
-            android:name=".home"
+            android:name=".Activity.home"
             android:exported="false" />
         <activity
-            android:name=".fillemail"
+            android:name=".Activity.fillemail"
             android:exported="false" />
         <activity
-            android:name=".forgot_password"
+            android:name=".Activity.forgot_password"
             android:exported="false" />
         <activity
-            android:name=".verify_otp"
+            android:name=".Activity.verify_otp"
             android:exported="false" />
         <activity
-            android:name=".signup"
+            android:name=".Activity.signup"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".Activity.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

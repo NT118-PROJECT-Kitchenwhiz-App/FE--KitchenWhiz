@@ -1,4 +1,4 @@
-package com.example.kitchenwhiz;
+package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+
+import com.example.kitchenwhiz.R;
 
 public class MainActivity extends AppCompatActivity {
 Button btnlogin;
