@@ -129,6 +129,7 @@ TextView txtlogin;
                     Toast.makeText(signup.this, "Đăng ký thành công. Vui lòng kiểm tra mail (bao gồm mail rác) để xác nhận OTP", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(signup.this, verify_otp.class);
                     intent.putExtra("email", request.getEmail());
+                    intent.putExtra("status", 1);
                     startActivity(intent);
                 }
                 else{

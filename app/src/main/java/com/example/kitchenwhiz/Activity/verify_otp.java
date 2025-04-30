@@ -30,6 +30,7 @@ public class verify_otp extends AppCompatActivity {
     EditText tbotp;
     Button btncancel, btnverify;
     TextView txtgetcode;
+    Integer status = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +42,7 @@ public class verify_otp extends AppCompatActivity {
             mapping();
             Intent intent = getIntent();
             String email = intent.getStringExtra("email");
+            status = intent.getIntExtra("status", 0);
             btncancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -95,19 +97,26 @@ public class verify_otp extends AppCompatActivity {
                     message = "Error";
                 }*/
                 if (response.isSuccessful()){
+                    if (status == 1){
                     Toast.makeText(verify_otp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(verify_otp.this, MainActivity.class);
                     startActivity(intent);
+                    }
+                    else {
+                        Toast.makeText(verify_otp.this, "Quên mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(verify_otp.this, forgot_password.class);
+                        startActivity(intent);
+                    }
                 }
                 else{
-                    Log.d("OTP", request.getOTP());
+                    Log.d("OTP", request.getOTP() + " " + status + " " + request.getEmail());
                     Toast.makeText(verify_otp.this, "Sai mã OTP", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("API Register", "Failed: " + t.getMessage());
+                Log.e("API OTP", "Failed: " + t.getMessage());
                 Toast.makeText(verify_otp.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
