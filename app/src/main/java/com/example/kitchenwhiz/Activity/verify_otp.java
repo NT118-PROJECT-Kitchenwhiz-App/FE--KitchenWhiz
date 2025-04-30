@@ -105,6 +105,7 @@ public class verify_otp extends AppCompatActivity {
                     else {
                         Toast.makeText(verify_otp.this, "Quên mật khẩu thành công", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(verify_otp.this, forgot_password.class);
+                        intent.putExtra("email", request.getEmail());
                         startActivity(intent);
                     }
                 }
