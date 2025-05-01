@@ -1,6 +1,7 @@
 package com.example.kitchenwhiz.Service;
 
 import com.example.kitchenwhiz.Model.ForgotPassRequest;
+import com.example.kitchenwhiz.Model.LoginRequest;
 import com.example.kitchenwhiz.Model.OTPRequest;
 import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.Model.ResetPasswordRequest;
@@ -22,5 +23,8 @@ public interface ApiService {
 
     @POST("user/resetPassword")
     Call<ResponseBody> resetPassword(@Body ResetPasswordRequest request);
+
+    @POST("user/login")
+    Call<ResponseBody> login(@Body LoginRequest request);
 
 }

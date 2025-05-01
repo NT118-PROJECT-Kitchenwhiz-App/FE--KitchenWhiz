@@ -108,7 +108,6 @@ TextView txtlogin;
         RetrofitClient.getApiService().registerUser(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                String message = "";
                 int statusCode = response.code();/*
                 try{
                     if (response.body() != null) {
@@ -133,18 +132,7 @@ TextView txtlogin;
                     startActivity(intent);
                 }
                 else{
-                    switch (statusCode) {
-                        case 400:
-                            message = "Bad request: " + message;
-                            break;
-                        case 409:
-                            message = "Email hoặc tên tài khoản đã tồn tại";
-                            break;
-                        default:
-                            message = "Lỗi " + statusCode + ": " + message;
-                            break;
-                    }
-                    Toast.makeText(signup.this, message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(signup.this, "Email hoặc tên tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
             }
 
