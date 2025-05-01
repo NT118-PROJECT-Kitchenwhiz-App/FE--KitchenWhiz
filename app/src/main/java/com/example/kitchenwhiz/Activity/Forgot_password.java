@@ -23,14 +23,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class fillemail extends AppCompatActivity {
+public class Forgot_password extends AppCompatActivity {
 Button btncancel, btnverify;
 EditText tbfillemail;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_fillemail);
+        setContentView(R.layout.activity_forgot_password);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -38,7 +38,7 @@ EditText tbfillemail;
             btncancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(fillemail.this, MainActivity.class);
+                    Intent intent = new Intent(Forgot_password.this, Login.class);
                     startActivity(intent);
                 }
             });
@@ -48,7 +48,7 @@ EditText tbfillemail;
                 public void onClick(View v) {
                     String email = tbfillemail.getText().toString().trim();
                     if (email == null){
-                        Toast.makeText(fillemail.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Forgot_password.this, "Vui lòng nhập email", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     ForgotPassRequest request = new ForgotPassRequest(email);
@@ -70,21 +70,21 @@ EditText tbfillemail;
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(fillemail.this, "Vui lòng xác nhận OTP", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(fillemail.this, verify_otp.class);
+                    Toast.makeText(Forgot_password.this, "Vui lòng xác nhận OTP", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Forgot_password.this, Verify_OTP.class);
                     intent.putExtra("email", request.getEmail());
                     intent.putExtra("status", 2);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(fillemail.this, "Email không tồn tại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Forgot_password.this, "Email không tồn tại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("API FORGOTPASS", "Failed: " + t.getMessage());
-                Toast.makeText(fillemail.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Forgot_password.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

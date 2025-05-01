@@ -1,4 +1,4 @@
-package com.example.kitchenwhiz.Activity;
+package com.example.kitchenwhiz.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,15 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.example.kitchenwhiz.R;
-import com.example.kitchenwhiz.Adapter.dish;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class dishadapter extends ArrayAdapter<dish> {
+public class Dish_Adapter extends ArrayAdapter<Dish> {
     private  Context ct;
-    private ArrayList<dish> arr;
-    public dishadapter(@NonNull Context context, int resource, @NonNull List<dish> object){
+    private ArrayList<Dish> arr;
+    public Dish_Adapter(@NonNull Context context, int resource, @NonNull List<Dish> object){
         super(context, resource, object);
         ct = context;
         arr = new ArrayList<>(object);
@@ -32,7 +31,7 @@ public class dishadapter extends ArrayAdapter<dish> {
             convertView = i.inflate(R.layout.dish_item, null);
         }
         if (arr.size()>0){
-            dish d = arr.get(position);
+            Dish d = arr.get(position);
         }
         return convertView;
     }

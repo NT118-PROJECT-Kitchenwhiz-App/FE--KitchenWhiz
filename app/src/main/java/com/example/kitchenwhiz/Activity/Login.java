@@ -21,7 +21,6 @@ import androidx.security.crypto.MasterKeys;
 import com.example.kitchenwhiz.Model.LoginRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
-import com.google.gson.JsonObject;
 
 import org.json.JSONObject;
 
@@ -30,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class Login extends AppCompatActivity {
 Button btnlogin;
 EditText tbname, tbpass;
 TextView txtforgotpass, txtregister;
@@ -54,7 +53,7 @@ String email = "";
                     String username = tbname.getText().toString().trim();
                     String pass = tbpass.getText().toString();
                     if (username.isEmpty() || pass.isEmpty()){
-                        Toast.makeText(MainActivity.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
@@ -66,7 +65,7 @@ String email = "";
             txtforgotpass.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, fillemail.class);
+                    Intent intent = new Intent(Login.this, Forgot_password.class);
                     startActivity(intent);
                 }
             });
@@ -74,7 +73,7 @@ String email = "";
             txtregister.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, signup.class);
+                    Intent intent = new Intent(Login.this, Signup.class);
                     startActivity(intent);
                 }
             });
@@ -102,7 +101,7 @@ String email = "";
                         getusername = json.optString("username",null);
                         email = json.optString("email", null);
                         String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-                        shared = EncryptedSharedPreferences.create("KitchenWhizToken", masterKey, MainActivity.this,
+                        shared = EncryptedSharedPreferences.create("KitchenWhizToken", masterKey, Login.this,
                                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
                         SharedPreferences.Editor editor = shared.edit();
@@ -111,17 +110,17 @@ String email = "";
                     }
                 } catch (Exception e) {
                     Log.d("API LOGIN", e.getMessage());
-                    Toast.makeText(MainActivity.this, "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
                 }
 
                 if (response.isSuccessful()){
-                    Intent intent = new Intent(MainActivity.this, home.class);
+                    Intent intent = new Intent(Login.this, Home.class);
                     intent.putExtra("username", getusername);
                     intent.putExtra("email", email);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(MainActivity.this, "Tên tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Tên tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                     Log.d("FAILED LOGIN", response.errorBody().toString());
                 }
 

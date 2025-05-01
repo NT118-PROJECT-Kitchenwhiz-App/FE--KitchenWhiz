@@ -16,31 +16,31 @@
         android:theme="@style/Theme.KitchenWhiz"
         tools:targetApi="31">
         <activity
-            android:name=".Activity.add_food"
+            android:name=".Activity.Add_food"
             android:exported="false" />
         <activity
-            android:name=".Activity.food_imformation"
+            android:name=".Activity.Food_imformation"
             android:exported="false" />
         <activity
-            android:name=".Activity.list_food"
+            android:name=".Activity.List_food"
             android:exported="false" />
         <activity
-            android:name=".Activity.home"
+            android:name=".Activity.Home"
             android:exported="false" />
         <activity
-            android:name=".Activity.fillemail"
+            android:name=".Activity.Forgot_password"
             android:exported="false" />
         <activity
-            android:name=".Activity.forgot_password"
+            android:name=".Activity.Reset_password"
             android:exported="false" />
         <activity
-            android:name=".Activity.verify_otp"
+            android:name=".Activity.Verify_OTP"
             android:exported="false" />
         <activity
-            android:name=".Activity.signup"
+            android:name=".Activity.Signup"
             android:exported="false" />
         <activity
-            android:name=".Activity.MainActivity"
+            android:name=".Activity.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

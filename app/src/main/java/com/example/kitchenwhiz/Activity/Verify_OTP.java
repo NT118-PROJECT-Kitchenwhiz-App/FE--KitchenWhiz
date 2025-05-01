@@ -19,14 +19,12 @@ import com.example.kitchenwhiz.Model.OTPRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
-import org.json.JSONObject;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class verify_otp extends AppCompatActivity {
+public class Verify_OTP extends AppCompatActivity {
     EditText tbotp;
     Button btncancel, btnverify;
     TextView txtgetcode;
@@ -46,7 +44,7 @@ public class verify_otp extends AppCompatActivity {
             btncancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(verify_otp.this, signup.class);
+                    Intent intent = new Intent(Verify_OTP.this, Signup.class);
                     startActivity(intent);
                 }
             });
@@ -56,7 +54,7 @@ public class verify_otp extends AppCompatActivity {
                 public void onClick(View v) {
                     String otpCode = tbotp.getText().toString().trim();
                     if (otpCode == null){
-                        Toast.makeText(verify_otp.this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Verify_OTP.this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     OTPRequest request = new OTPRequest(email, otpCode);
@@ -98,27 +96,27 @@ public class verify_otp extends AppCompatActivity {
                 }*/
                 if (response.isSuccessful()){
                     if (status == 1){
-                    Toast.makeText(verify_otp.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(verify_otp.this, MainActivity.class);
+                    Toast.makeText(Verify_OTP.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Verify_OTP.this, Login.class);
                     startActivity(intent);
                     }
                     else {
-                        Toast.makeText(verify_otp.this, "Quên mật khẩu thành công", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(verify_otp.this, forgot_password.class);
+                        Toast.makeText(Verify_OTP.this, "Quên mật khẩu thành công", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(Verify_OTP.this, Reset_password.class);
                         intent.putExtra("email", request.getEmail());
                         startActivity(intent);
                     }
                 }
                 else{
                     Log.d("OTP", request.getOTP() + " " + status + " " + request.getEmail());
-                    Toast.makeText(verify_otp.this, "Sai mã OTP", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Verify_OTP.this, "Sai mã OTP", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("API OTP", "Failed: " + t.getMessage());
-                Toast.makeText(verify_otp.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Verify_OTP.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

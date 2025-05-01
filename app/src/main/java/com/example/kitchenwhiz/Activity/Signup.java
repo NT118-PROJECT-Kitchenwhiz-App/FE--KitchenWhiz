@@ -19,14 +19,12 @@ import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
-import org.json.JSONObject;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class signup extends AppCompatActivity {
+public class Signup extends AppCompatActivity {
 EditText tbemail,  tbusername, tbpass, tbcfpass;
 Button btnsignup;
 TextView txtlogin;
@@ -47,22 +45,22 @@ TextView txtlogin;
                     String password = tbpass.getText().toString();
                     String cfpassword = tbcfpass.getText().toString();
                     if (!validateemail(email)){
-                        Toast.makeText(signup.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Signup.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_LONG).show();
                         return;
                     }
 
                     if (!validateusername(username)){
-                        Toast.makeText(signup.this, "Tên tài khoản phải có độ dài từ 6-20 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Signup.this, "Tên tài khoản phải có độ dài từ 6-20 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
                         return;
                     }
 
                     if (!validatepass(password)){
-                        Toast.makeText(signup.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Signup.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
                         return;
                     }
 
                     if (!password.equals(cfpassword)){
-                        Toast.makeText(signup.this, "Mật khẩu không khớp", Toast.LENGTH_LONG).show();
+                        Toast.makeText(Signup.this, "Mật khẩu không khớp", Toast.LENGTH_LONG).show();
                         return;
                     }
 
@@ -73,7 +71,7 @@ TextView txtlogin;
                     txtlogin.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(signup.this, MainActivity.class);
+                            Intent intent = new Intent(Signup.this, Login.class);
                             startActivity(intent);
                         }
                     });
@@ -125,21 +123,21 @@ TextView txtlogin;
                     message = "Error";
                 }*/
                 if (response.isSuccessful()) {
-                    Toast.makeText(signup.this, "Đăng ký thành công. Vui lòng kiểm tra mail (bao gồm mail rác) để xác nhận OTP", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(signup.this, verify_otp.class);
+                    Toast.makeText(Signup.this, "Đăng ký thành công. Vui lòng kiểm tra mail (bao gồm mail rác) để xác nhận OTP", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Signup.this, Verify_OTP.class);
                     intent.putExtra("email", request.getEmail());
                     intent.putExtra("status", 1);
                     startActivity(intent);
                 }
                 else{
-                    Toast.makeText(signup.this, "Email hoặc tên tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Signup.this, "Email hoặc tên tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("API Register", "Failed: " + t.getMessage());
-                Toast.makeText(signup.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Signup.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

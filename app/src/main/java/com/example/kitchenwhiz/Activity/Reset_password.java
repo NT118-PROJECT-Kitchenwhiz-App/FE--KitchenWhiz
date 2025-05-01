@@ -23,14 +23,14 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class forgot_password extends AppCompatActivity {
+public class Reset_password extends AppCompatActivity {
 Button btncancel, btnverify;
 EditText tbpass, tbcfpass;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_forgot_password);
+        setContentView(R.layout.activity_reset_password);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -38,7 +38,7 @@ EditText tbpass, tbcfpass;
             btncancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(forgot_password.this, MainActivity.class);
+                    Intent intent = new Intent(Reset_password.this, Login.class);
                     startActivity(intent);
                 }
             });
@@ -50,15 +50,15 @@ EditText tbpass, tbcfpass;
                 public void onClick(View v) {
                     String newPassword = tbpass.getText().toString();
                     if (newPassword.isEmpty()){
-                        Toast.makeText(forgot_password.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Reset_password.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (!newPassword.equals(tbcfpass.getText().toString())){
-                        Toast.makeText(forgot_password.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Reset_password.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     if (!validatepass(newPassword)){
-                        Toast.makeText(forgot_password.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Reset_password.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     ResetPasswordRequest request = new ResetPasswordRequest(email, newPassword);
@@ -83,20 +83,20 @@ EditText tbpass, tbcfpass;
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){
-                    Toast.makeText(forgot_password.this, "Đổi mật khẩu thành công. Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(forgot_password.this, MainActivity.class);
+                    Toast.makeText(Reset_password.this, "Đổi mật khẩu thành công. Vui lòng đăng nhập lại", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Reset_password.this, Login.class);
                     startActivity(intent);
                 }
                 else{
                     Log.d("RESETBODY", response.errorBody().toString());
-                    Toast.makeText(forgot_password.this, "Error", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Reset_password.this, "Error", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 Log.e("API RESET", "Failed: " + t.getMessage());
-                Toast.makeText(forgot_password.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Reset_password.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
     }

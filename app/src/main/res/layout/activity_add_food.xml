@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E9DEF2"
-    tools:context=".Activity.add_food">
+    tools:context=".Activity.Add_food">
 
     <ScrollView
         android:layout_width="match_parent"

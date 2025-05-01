@@ -1,4 +1,4 @@
 package com.example.kitchenwhiz.Adapter;
 
-public class dish {
+public class Dish {
 }

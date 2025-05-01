@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E9DEF2"
-    tools:context=".Activity.home">
+    tools:context=".Activity.Home">
 
 
     <ScrollView
@@ -184,7 +184,7 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:id="@+id/btncooked"
+                            android:id="@+id/btnfavorite"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -262,7 +262,7 @@
                         android:layout_gravity="center">
 
                         <ImageView
-                            android:id="@+id/btncooked"
+                            android:id="@+id/btnsuggested"
                             android:layout_width="70dp"
                             android:layout_height="70dp"
                             android:layout_marginTop="32dp"
@@ -295,7 +295,7 @@
                 android:layout_height="match_parent">
 
                 <View
-                    android:id="@+id/contactus"
+                    android:id="@+id/createdish"
                     android:layout_width="363dp"
                     android:layout_height="120dp"
                     android:layout_marginTop="40dp"
@@ -317,10 +317,10 @@
                     android:textColor="#ff80b7"
                     android:textSize="20dp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@+id/contactus"
+                    app:layout_constraintEnd_toEndOf="@+id/createdish"
                     app:layout_constraintHorizontal_bias="0.067"
-                    app:layout_constraintStart_toStartOf="@+id/contactus"
-                    app:layout_constraintTop_toTopOf="@+id/contactus" />
+                    app:layout_constraintStart_toStartOf="@+id/createdish"
+                    app:layout_constraintTop_toTopOf="@+id/createdish" />
 
                 <TextView
                     android:id="@+id/textView3"
@@ -331,9 +331,9 @@
                     android:text="Chung tay cùng bếp tạo ra các món ăn mới ngay nào!!!"
                     android:textColor="#5B5D9F"
                     android:textSize="24dp"
-                    app:layout_constraintEnd_toEndOf="@+id/contactus"
+                    app:layout_constraintEnd_toEndOf="@+id/createdish"
                     app:layout_constraintHorizontal_bias="0.355"
-                    app:layout_constraintStart_toStartOf="@+id/contactus"
+                    app:layout_constraintStart_toStartOf="@+id/createdish"
                     app:layout_constraintTop_toBottomOf="@+id/textView2" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
