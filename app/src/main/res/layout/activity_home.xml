@@ -38,23 +38,22 @@
 
                 <TextView
                     android:id="@+id/txtname"
-                    android:layout_width="wrap_content"
+                    android:layout_width="270dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:text="NAME"
-                    android:textColor="#9C93F0"
                     android:fontFamily="@font/regular_font"
-                    android:textSize="26dp"
+                    android:textColor="#9C93F0"
+                    android:textSize="30sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.067"
+                    app:layout_constraintEnd_toStartOf="@+id/avatar"
+                    app:layout_constraintHorizontal_bias="0.687"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/avatar"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
                     android:layout_marginTop="28dp"
                     android:scaleType="centerCrop"
                     android:src="@drawable/labour_day_celebration_with_chef_icon_23_2150298713"
@@ -72,12 +71,12 @@
                 <EditText
                     android:id="@+id/home_search"
                     android:layout_width="366dp"
-                    android:layout_height="39dp"
+                    android:layout_height="43dp"
+                    android:layout_marginTop="18dp"
                     android:background="@drawable/edittext"
                     android:drawableRight="@drawable/search_icon_2048x2048_cmujl7en"
                     android:drawablePadding="10dp"
                     android:ems="10"
-                    android:layout_marginTop="10dp"
                     android:fontFamily="@font/regular_font"
                     android:hint="Khám phá những công thức mới nào..."
                     android:inputType="text"
@@ -89,6 +88,7 @@
 
                     android:textStyle="italic"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.481"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>

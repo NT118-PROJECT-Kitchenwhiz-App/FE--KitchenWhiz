@@ -1,26 +1,33 @@
 package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKeys;
 
 import com.example.kitchenwhiz.R;
+import com.google.android.material.imageview.ShapeableImageView;
 
 public class Home extends AppCompatActivity {
-TextView username;
-EditText Search;
-View Randomfood, Createfood;
+TextView txtusername;
+EditText tbSearch;
+ShapeableImageView avatar;
+View viewRandomfood, viewCreatefood;
 ImageView favoriteIcon, recentlyIcon, suggestedIcon;
-
+SharedPreferences shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,19 +38,46 @@ ImageView favoriteIcon, recentlyIcon, suggestedIcon;
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             mapping();
+            String token = getToken();
+
             Intent intent = getIntent();
             String username = intent.getStringExtra("username");
+            txtusername.setText(username);
+
             return insets;
         });
     }
 
     private void mapping(){
-        username = findViewById(R.id.txtname);
-        Search = findViewById(R.id.home_search);
-        Randomfood = findViewById(R.id.rcmrandomfood);
-        Createfood = findViewById(R.id.createdish);
+        txtusername = findViewById(R.id.txtname);
+        tbSearch = findViewById(R.id.home_search);
+        avatar = findViewById(R.id.avatar);
+        viewRandomfood = findViewById(R.id.rcmrandomfood);
+        viewCreatefood = findViewById(R.id.createdish);
         favoriteIcon = findViewById(R.id.btnfavorite);
         recentlyIcon = findViewById(R.id.btncooked);
         suggestedIcon = findViewById(R.id.btnsuggested);
+    }
+
+    private String getToken(){
+        try {
+            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
+            shared = EncryptedSharedPreferences.create(
+                    "KitchenWhizToken",
+                    masterKey,
+                    this,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+        } catch (Exception e) {
+            Log.e("SharedPrefs", e.getMessage());
+            shared = getSharedPreferences("KitchenWhizToken", MODE_PRIVATE);
+        }
+        String token = shared.getString("access_token", null);
+        if (token == null){
+            Toast.makeText(this, "Access Token không tìm thấy", Toast.LENGTH_SHORT).show();
+            return null;
+        }
+        return token;
     }
 }
