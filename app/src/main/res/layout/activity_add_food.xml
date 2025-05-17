@@ -21,12 +21,14 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/image"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/uploadphotos" />
 
             <EditText
+                android:id="@+id/txtnamefood"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -40,6 +42,7 @@
                 android:textSize="25dp" />
 
             <EditText
+                android:id="@+id/txtdes"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -85,39 +88,43 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ingredient_row"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
                     <EditText
+                        android:id="@+id/txtser"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginTop="10dp"
+                        android:layout_marginRight="20dp"
                         android:fontFamily="@font/regular_font"
                         android:gravity="center"
                         android:hint="2 người"
-                        android:layout_marginRight="20dp"
                         android:padding="5dp"
                         android:textColor="#7A6ED3"
                         android:textColorHint="#C3AFEB"
                         android:textSize="23dp" />
 
                     <EditText
+                        android:id="@+id/txttime"
                         android:layout_width="match_parent"
                         android:layout_height="70dp"
                         android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
                         android:fontFamily="@font/regular_font"
                         android:gravity="center"
                         android:hint="60 phút"
-                        android:layout_marginRight="20dp"
                         android:textColor="#7A6ED3"
                         android:textColorHint="#C3AFEB"
-                        android:textSize="23dp"/>
+                        android:textSize="23dp" />
                 </LinearLayout>
 
             </LinearLayout>
             <TextView
+                android:id="@+id/btnaddin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Nguyên liệu"
@@ -200,6 +207,7 @@
                     android:textColor="#7A6ED3"/>
             </LinearLayout>
             <TextView
+                android:id="@+id/addingre"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="+ Nguyên liệu"
@@ -219,6 +227,7 @@
                 android:textSize="27dp"
                 android:textStyle="bold"/>
             <EditText
+                android:id="@+id/txtins"
                 android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -232,6 +241,7 @@
                 android:textColorHint="#C3AFEB"
                 android:textColor="#7A6ED3"/>
             <Button
+                android:id="@+id/btnaddfood"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="LƯU CÔNG THỨC"
