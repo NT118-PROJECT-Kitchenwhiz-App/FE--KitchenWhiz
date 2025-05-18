@@ -1,5 +1,6 @@
 package com.example.kitchenwhiz.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -22,7 +24,8 @@ public class Add_food extends AppCompatActivity {
     EditText txtname, txtdes, txtser, txttime,txtins;
     Button btnadd;
     TextView btnaddin;
-    private LinearLayout ingredientContainer;
+    LinearLayout ingredientContainer;
+    ActivityResultLauncher<Intent> pickImageLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,8 @@ public class Add_food extends AppCompatActivity {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             mapping();
-
+            addRow();
+            addRow();
             btnaddin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -51,14 +55,14 @@ public class Add_food extends AppCompatActivity {
         txtins = findViewById(R.id.txtins);
         txtser = findViewById(R.id.txtser);
         txttime = findViewById(R.id.txttime);
-        btnaddin = findViewById(R.id.btnaddin);
+        btnaddin = findViewById(R.id.addingre);
         btnadd = findViewById(R.id.btnaddfood);
+        ingredientContainer = findViewById(R.id.ingredient_container);
     }
 
     private void addRow() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View ingredientRow = inflater.inflate(R.layout.activity_add_food, ingredientContainer, false);
-
+        View ingredientRow = inflater.inflate(R.layout.ingredient_rows, ingredientContainer, false);
         ingredientContainer.addView(ingredientRow);
     }
 

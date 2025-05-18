@@ -123,6 +123,7 @@
                 </LinearLayout>
 
             </LinearLayout>
+
             <TextView
                 android:id="@+id/btnaddin"
                 android:layout_width="match_parent"
@@ -134,78 +135,16 @@
                 android:fontFamily="@font/regular_font"
                 android:textSize="27dp"
                 android:textStyle="bold"/>
+
             <LinearLayout
+                android:id="@+id/ingredient_container"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-                <EditText
-                    android:layout_width="150dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="Tên nguyên liệu"
-                    android:textColor="#7A6ED3"/>
+                android:orientation="vertical"/>
 
-                <EditText
-                    android:layout_width="100dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="Số lượng"
-                    android:textColor="#7A6ED3"/>
-                <EditText
-                    android:layout_width="150dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="Đơn vị"
-                    android:textColor="#7A6ED3"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="20dp"
-                android:orientation="horizontal">
-                <EditText
-                    android:layout_width="150dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="Thịt gà"
-                    android:textColor="#7A6ED3"/>
-
-                <EditText
-                    android:layout_width="100dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="200"
-                    android:textColor="#7A6ED3"/>
-                <EditText
-                    android:layout_width="150dp"
-                    android:textColorHint="#C3AFEB"
-                    android:fontFamily="@font/regular_font"
-                    android:textSize="20dp"
-                    android:padding="12dp"
-                    android:layout_height="match_parent"
-                    android:hint="gam"
-                    android:textColor="#7A6ED3"/>
-            </LinearLayout>
             <TextView
                 android:id="@+id/addingre"
                 android:layout_width="match_parent"
@@ -216,6 +155,7 @@
                 android:textSize="22dp"
                 android:fontFamily="@font/regular_font"
                 android:gravity="center"/>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -226,6 +166,7 @@
                 android:fontFamily="@font/regular_font"
                 android:textSize="27dp"
                 android:textStyle="bold"/>
+
             <EditText
                 android:id="@+id/txtins"
                 android:layout_marginTop="10dp"
@@ -240,6 +181,7 @@
                 android:textSize="20dp"
                 android:textColorHint="#C3AFEB"
                 android:textColor="#7A6ED3"/>
+
             <Button
                 android:id="@+id/btnaddfood"
                 android:layout_width="match_parent"
@@ -254,8 +196,6 @@
                 android:layout_marginRight="80dp"
                 android:layout_marginLeft="80dp"
                 android:layout_marginBottom="20dp"/>
-
-
 
         </LinearLayout>
     </ScrollView>
