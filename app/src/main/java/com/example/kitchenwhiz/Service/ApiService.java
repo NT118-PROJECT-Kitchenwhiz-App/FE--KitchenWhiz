@@ -7,6 +7,7 @@ import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.Model.ResetPasswordRequest;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -29,12 +30,12 @@ public interface ApiService {
 
     @POST("user/login")
     Call<ResponseBody> login(@Body LoginRequest request);
-
     @Multipart
     @POST("recipe/addRecipe")
-    Call<Void> addRecipe(
+    Call<ResponseBody> addRecipe(
             @Part MultipartBody.Part image,
-            @Part("recipeInfo") String recipeInfo
+            @Part("recipeInfo") RequestBody recipeInfo
     );
+
 
 }

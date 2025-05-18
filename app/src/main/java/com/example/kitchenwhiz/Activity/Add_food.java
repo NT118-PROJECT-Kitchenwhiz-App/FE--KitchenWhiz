@@ -23,10 +23,28 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.kitchenwhiz.Model.Ingredients;
+import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Service.ApiService;
+import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 public class Add_food extends AppCompatActivity {
     ImageView image;
@@ -34,6 +52,7 @@ public class Add_food extends AppCompatActivity {
     Button btnadd;
     TextView btnaddin;
     LinearLayout ingredientContainer;
+    List<Ingredients> ingredients = new ArrayList<>();
     ActivityResultLauncher<Intent> pickImage;
     File imageFile;
 
@@ -70,6 +89,41 @@ public class Add_food extends AppCompatActivity {
                     pickImage.launch(intent);
             });
 
+            btnadd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String name = txtname.getText().toString().trim();
+                    String des = txtdes.getText().toString().trim();
+                    String ins = txtins.getText().toString().trim();
+                    String servings_str = txtser.getText().toString().trim();
+                    String time = txttime.getText().toString().trim();
+                    addIngredient();
+                    if (name.isEmpty() || des.isEmpty() || ins.isEmpty() || servings_str.isEmpty() || time.isEmpty()) {
+                        Toast.makeText(Add_food.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    try {
+                        int readyInMinutes = Integer.parseInt(time);
+                        int servings = Integer.parseInt(servings_str);
+                        RecipeInfo info = new RecipeInfo(name, servings, readyInMinutes, des, ins, ingredients);
+                        Gson gson = new Gson();
+                        String recipeInfoJson = gson.toJson(info);
+
+                        if (recipeInfoJson == null || recipeInfoJson.isEmpty()) {
+                            Toast.makeText(Add_food.this, "Error creating recipe JSON", Toast.LENGTH_SHORT).show();
+                            Log.e("ADD_FOOD", "recipeInfoJson is null or empty");
+                            return;
+                        }
+
+                        AddRecipe(imageFile, recipeInfoJson);
+
+                    }
+                    catch (Exception ex) {
+                        Log.d("ADD_FOOD", ex.getMessage());
+                    }
+                }
+            });
             ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -106,10 +160,94 @@ public class Add_food extends AppCompatActivity {
             return imageFile;
         } catch (Exception e) {
             Log.d("IMAGE_ADD_FOOD", e.getMessage());
-            Toast.makeText(this, "Error saving image: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return null;
         }
     }
 
+    private void addIngredient() {
+        ingredients.clear();
+        for (int i = 0; i < ingredientContainer.getChildCount(); i++){
+            View row = ingredientContainer.getChildAt(i);
+            EditText txtnameingre = row.findViewById(R.id.ingredient_name);
+            EditText txtamount = row.findViewById(R.id.ingredient_amount);
+            EditText txtunit = row.findViewById(R.id.ingredient_unit);
+
+            String name_ingredients = txtnameingre.getText().toString().trim();
+            String amount_ingredients = txtamount.getText().toString().trim();
+            String unit_ingredients = txtunit.getText().toString().trim();
+            if (!name_ingredients.isEmpty() && !amount_ingredients.isEmpty() && !unit_ingredients.isEmpty()) {
+                try {
+                    double double_amount = Double.parseDouble(amount_ingredients);
+                    ingredients.add(new Ingredients(name_ingredients, double_amount, unit_ingredients));
+                } catch (Exception e) {
+                    Toast.makeText(this, "Số lượng phải là số", Toast.LENGTH_SHORT).show();
+                }
+            }
+            else {
+                Toast.makeText(Add_food.this, "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+    }
+
+    private void AddRecipe(File imageFile, String recipeInfoJson ) {
+        if (imageFile == null) {
+            Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String mimeType = URLConnection.guessContentTypeFromName(imageFile.getName());
+        if (mimeType == null) {
+            mimeType = "image/jpeg";
+        }
+        RequestBody imageRequestBody = RequestBody.create(MediaType.parse(mimeType), imageFile);
+
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), imageRequestBody);
+
+        RequestBody jsonRequestBody = RequestBody.create(
+                MediaType.parse("application/json"), recipeInfoJson
+        );
+        ApiService apiService = RetrofitClient.getApiService();
+        Call<ResponseBody> call = apiService.addRecipe(imagePart, jsonRequestBody);
+
+        call.enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Add_food.this, "Thêm công thức thành công", Toast.LENGTH_SHORT).show();
+                    resetForm();
+                } else {
+                    if (response.errorBody() != null) {
+                        try {
+                            Log.d("API_ERROR", response.errorBody().string());
+                            Log.d("TET", recipeInfoJson.toString());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(Add_food.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void resetForm(){
+        txtname.setText("");
+        txttime.setText("");
+        txtser.setText("");
+        txtins.setText("");
+        txtdes.setText("");
+        ingredients.clear();
+        ingredientContainer.removeAllViews();
+        addRow();
+        addRow();
+        image.setImageResource(R.drawable.uploadphotos);
+        imageFile = null;
+    }
 
 }

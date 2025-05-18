@@ -2,10 +2,10 @@ package com.example.kitchenwhiz.Model;
 
 public class Ingredients {
     private String name;
-    private long amount;
+    private double amount;
     private String unit;
 
-    public Ingredients(String name, long amount, String unit){
+    public Ingredients(String name, double amount, String unit){
         this.name = name;
         this.amount = amount;
         this.unit = unit;
@@ -15,7 +15,7 @@ public class Ingredients {
         return name;
     }
 
-    public long getAmount() {
+    public double getAmount() {
         return amount;
     }
 

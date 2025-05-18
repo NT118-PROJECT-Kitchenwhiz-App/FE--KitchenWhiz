@@ -6,27 +6,29 @@ import java.util.List;
 
 public class RecipeInfo {
     private String title;
-    private String servings;
-    private String readyInMinutes;
+    private int servings;
+    private int readyInMinutes;
     private String summary;
-    private List<Ingredients> instructions;
+    private String instructions;
+    private List<Ingredients> ingredients;
 
-    public RecipeInfo(String title, String servings, String readyInMinutes, String summary, List<Ingredients> instructions) {
+    public RecipeInfo(String title, int servings, int readyInMinutes, String summary, String instructions, List<Ingredients> ingredients) {
         this.title = title;
         this.servings = servings;
         this.readyInMinutes = readyInMinutes;
         this.summary = summary;
         this.instructions = instructions;
+        this.ingredients = ingredients;
     }
-    public List<Ingredients> getInstructions() {
+    public String getInstructions() {
         return instructions;
     }
 
-    public String getReadyInMinutes() {
+    public int getReadyInMinutes() {
         return readyInMinutes;
     }
 
-    public String getServings() {
+    public int getServings() {
         return servings;
     }
 
@@ -38,15 +40,23 @@ public class RecipeInfo {
         return title;
     }
 
-    public void setInstructions(List<Ingredients> instructions) {
+    public List<Ingredients> getIngredients() {
+        return ingredients;
+    }
+
+    public void setInstructions(String instructions) {
         this.instructions = instructions;
     }
 
-    public void setReadyInMinutes(String readyInMinutes) {
+    public void setIngredients(List<Ingredients> ingredients) {
+        this.ingredients = ingredients;
+    }
+
+    public void setReadyInMinutes(int readyInMinutes) {
         this.readyInMinutes = readyInMinutes;
     }
 
-    public void setServings(String servings) {
+    public void setServings(int servings) {
         this.servings = servings;
     }
 
