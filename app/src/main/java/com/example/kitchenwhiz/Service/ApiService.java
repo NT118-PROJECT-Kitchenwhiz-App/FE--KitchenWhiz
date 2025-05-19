@@ -4,9 +4,11 @@ import com.example.kitchenwhiz.Model.ForgotPassRequest;
 import com.example.kitchenwhiz.Model.LoginRequest;
 import com.example.kitchenwhiz.Model.OTPRequest;
 import com.example.kitchenwhiz.Model.RecipeInfo;
+import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.Model.ResetPasswordRequest;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -42,6 +44,6 @@ public interface ApiService {
             @Part("recipeInfo") RequestBody recipeInfo
     );
     @GET("recipe/searchByIngredient")
-    Call<List<RecipeInfo>> searchByIngredient(@Query("name") String name);
+    Call<List<RecipeModel>> searchByIngredient(@Query("name") String name);
 
 }

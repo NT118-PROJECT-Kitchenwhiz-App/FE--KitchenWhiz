@@ -1,7 +1,7 @@
 package com.example.kitchenwhiz.Model;
 
 public class RecipeModel {
-    String id;
+    String _id;
     String title;
     String image;
 
@@ -10,7 +10,7 @@ public class RecipeModel {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
     public String getTitle() {

@@ -1,7 +1,17 @@
 package com.example.kitchenwhiz.Activity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
+import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,13 +20,22 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
+import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Service.ApiService;
+import com.example.kitchenwhiz.Service.RetrofitClient;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class List_food extends AppCompatActivity {
 ListView listFood;
+EditText txt_Search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -25,15 +44,68 @@ ListView listFood;
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            listFood = findViewById(R.id.listFood);
-            ArrayList<RecipeModel> arrDish = new ArrayList<>();
-            while (arrDish.size()<10){
-                arrDish.add(new RecipeModel());
-            }
-            Dish_Adapter Dish_Adapter = new Dish_Adapter(this, 0, arrDish);
-            listFood.setAdapter(Dish_Adapter);
+            mapping();
+            List<RecipeModel> arrDish = new ArrayList<>();
+            Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
+            listFood.setAdapter(dishAdapter);
+            Intent intent = getIntent();
+            String home_query = intent.getStringExtra("search_query");
+
+            txt_Search.setText(home_query);
+
+            searchRecipe(home_query, arrDish, dishAdapter);
+
+            txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                            (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+
+                        String query = txt_Search.getText().toString().trim().toLowerCase();
+                        searchRecipe(query, arrDish, dishAdapter);
+
+                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(txt_Search.getWindowToken(), 0);
+
+                        return true;
+                    }
+                    return false;
+                }
+            });
+
+
 
             return insets;
         });
+    }
+
+    private void mapping() {
+        listFood = findViewById(R.id.listFood);
+        txt_Search = findViewById(R.id.home_search);
+    }
+
+    private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter){
+        RetrofitClient.getApiService().searchByIngredient(name).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()){
+                    arr.clear();
+                    arr.addAll(response.body());
+                    dishAdapter.notifyDataSetChanged();
+                }
+                else if (response.code() == 404) {
+                    Toast.makeText(List_food.this, "Không tìm thấy món ăn cần tìm", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+
+    });
     }
 }

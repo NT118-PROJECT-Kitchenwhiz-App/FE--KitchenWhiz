@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowInsets;
 import android.widget.EditText;
@@ -45,6 +46,20 @@ SharedPreferences shared;
             Intent intent = getIntent();
             String username = intent.getStringExtra("username");
             txtusername.setText(username);
+
+            tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                @Override
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                        String query = tbSearch.getText().toString().trim();
+                        Intent intent = new Intent(Home.this, List_food.class);
+                        intent.putExtra("search_query", query);
+                        startActivity(intent);
+                        return true;
+                    }
+                    return false;
+                }
+            });
 
             viewCreatefood.setOnClickListener(new View.OnClickListener() {
                 @Override

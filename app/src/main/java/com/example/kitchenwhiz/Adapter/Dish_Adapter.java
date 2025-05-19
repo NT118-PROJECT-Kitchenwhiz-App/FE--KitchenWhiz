@@ -16,48 +16,51 @@ import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.R;
+import com.google.android.material.imageview.ShapeableImageView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Dish_Adapter extends ArrayAdapter<RecipeInfo> {
+public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
     private Context ct;
-    private ArrayList<RecipeModel> recipeModelsArr;
+    private int resource;
+    private List<RecipeModel> recipeModelsArr;
 
-    public Dish_Adapter(@NonNull Context context, int resource, @NonNull List<RecipeInfo> object) {
+    public Dish_Adapter(@NonNull Context context, int resource, @NonNull List<RecipeModel> object) {
         super(context, resource, object);
         ct = context;
-        recipeModelsArr = new ArrayList<>(object);
+        this.resource = resource;
+        this.recipeModelsArr = object;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        ViewHolder holder;
-        if (convertView == null) {
-            LayoutInflater inflater = LayoutInflater.from(ct);
-            convertView = inflater.inflate(R.layout.dish_item, parent, false);
-            holder = new ViewHolder();
-            holder.txt_title = convertView.findViewById(R.id.title_dish);
-            holder.image_dish = convertView.findViewById(R.id.food_img);
-            convertView.setTag(holder);
-        }
-        if (recipeModelsArr.size() > 0) {
-            RecipeModel recipeModel = recipeModelsArr.get(position);
-            holder.txt_title.setText(recipeModel.getTitle());
-            if (recipeModel.getImage() != null && !recipeModel.getImage().isEmpty()) {
-                Glide.with(ct)
-                        .load(recipeModel.getImage())
-                        .error(Glide.with(ct).load(R.drawable.error))
-                        .into(holder.image_dish);
-            } else {
-                Glide.with(ct)
-                        .load(R.drawable.error)
-                        .into(holder.image_dish);
-            }
+        LayoutInflater inflater = LayoutInflater.from(ct);
+        View view = convertView;
 
+        if (view == null) {
+            view = inflater.inflate(resource, parent, false);
         }
-        return convertView;
+
+        TextView title = view.findViewById(R.id.title_dish);
+        ShapeableImageView foodImg = view.findViewById(R.id.food_img);
+        RecipeModel recipe = recipeModelsArr.get(position);
+        title.setText(recipe.getTitle().toUpperCase());
+
+        Glide.with(ct)
+                .load(recipe.getImage())
+                .placeholder(R.drawable.loading_icon)
+                .into(foodImg);
+
+        return view;
+    }
+
+    public void updateRecipes(List<RecipeModel> newRecipes) {
+        if (recipeModelsArr != null) {
+        this.recipeModelsArr.clear(); }
+        this.recipeModelsArr.addAll(newRecipes);
+        notifyDataSetChanged();
     }
 
     private static class ViewHolder {
