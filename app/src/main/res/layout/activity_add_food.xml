@@ -56,7 +56,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
+                android:layout_height="170dp"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -78,11 +78,11 @@
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="90dp"
                         android:layout_marginLeft="20dp"
                         android:fontFamily="@font/regular_font"
                         android:gravity="center"
-                        android:text="Thời gian nấu"
+                        android:text="Thời gian nấu\n(Tính theo phút)"
                         android:textColor="#7A6ED3"
                         android:textSize="23dp" />
                 </LinearLayout>
@@ -102,24 +102,26 @@
                         android:layout_marginRight="20dp"
                         android:fontFamily="@font/regular_font"
                         android:gravity="center"
-                        android:hint="2 người"
+                        android:hint="2"
                         android:padding="5dp"
                         android:textColor="#7A6ED3"
                         android:textColorHint="#C3AFEB"
-                        android:textSize="23dp" />
+                        android:textSize="23dp"
+                        android:inputType="number"/>
 
                     <EditText
                         android:id="@+id/txttime"
                         android:layout_width="match_parent"
-                        android:layout_height="70dp"
+                        android:layout_height="90dp"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
                         android:fontFamily="@font/regular_font"
                         android:gravity="center"
-                        android:hint="60 phút"
+                        android:hint="60"
                         android:textColor="#7A6ED3"
                         android:textColorHint="#C3AFEB"
-                        android:textSize="23dp" />
+                        android:textSize="23dp"
+                        android:inputType="number"/>
                 </LinearLayout>
 
             </LinearLayout>

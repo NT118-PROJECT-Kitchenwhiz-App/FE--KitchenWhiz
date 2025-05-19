@@ -36,7 +36,7 @@
         </RelativeLayout>
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/avatar"
+            android:id="@+id/food_img"
             android:layout_margin="10dp"
             android:layout_width="110dp"
             android:layout_height="110dp"
@@ -72,6 +72,7 @@
         </RelativeLayout>
 
         <TextView
+            android:id="@+id/title_dish"
             android:layout_width="360dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/regular_font"

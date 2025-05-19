@@ -10,8 +10,8 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
+import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.R;
-import com.example.kitchenwhiz.Adapter.Dish;
 
 import java.util.ArrayList;
 
@@ -26,9 +26,9 @@ ListView listFood;
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             listFood = findViewById(R.id.listFood);
-            ArrayList<Dish> arrDish = new ArrayList<>();
+            ArrayList<RecipeModel> arrDish = new ArrayList<>();
             while (arrDish.size()<10){
-                arrDish.add(new Dish());
+                arrDish.add(new RecipeModel());
             }
             Dish_Adapter Dish_Adapter = new Dish_Adapter(this, 0, arrDish);
             listFood.setAdapter(Dish_Adapter);
