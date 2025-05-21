@@ -18,15 +18,17 @@ public class RecipeModel {
         this.title = "Default Recipe";
         this.image = "";
         this.servings = 0;
+        this.readyInMinutes = 0;
         this.ingredients = null;
         this.instructions = "";
     }
 
-    public RecipeModel(String _id, String title, String image, int servings, List<Ingredients> ingredients, String instructions) {
+    public RecipeModel(String _id, String title, String image, int servings, int readyInMinutes, List<Ingredients> ingredients, String instructions) {
         this._id = _id;
         this.title = title;
         this.image = image;
         this.servings = servings;
+        this.readyInMinutes = readyInMinutes;
         this.ingredients = ingredients;
         this.instructions = instructions;
     }

@@ -7,7 +7,7 @@ import java.util.List;
 public class RecipeInfo {
     private String title;
     private int servings;
-    private int readyInMinutes;
+    private int ready_in_minutes;
     private String summary;
     private String instructions;
     private List<Ingredients> ingredients;
@@ -15,7 +15,7 @@ public class RecipeInfo {
     public RecipeInfo(String title, int servings, int readyInMinutes, String summary, String instructions, List<Ingredients> ingredients) {
         this.title = title;
         this.servings = servings;
-        this.readyInMinutes = readyInMinutes;
+        this.ready_in_minutes = readyInMinutes;
         this.summary = summary;
         this.instructions = instructions;
         this.ingredients = ingredients;
@@ -25,7 +25,7 @@ public class RecipeInfo {
     }
 
     public int getReadyInMinutes() {
-        return readyInMinutes;
+        return ready_in_minutes;
     }
 
     public int getServings() {
@@ -53,7 +53,7 @@ public class RecipeInfo {
     }
 
     public void setReadyInMinutes(int readyInMinutes) {
-        this.readyInMinutes = readyInMinutes;
+        this.ready_in_minutes = readyInMinutes;
     }
 
     public void setServings(int servings) {

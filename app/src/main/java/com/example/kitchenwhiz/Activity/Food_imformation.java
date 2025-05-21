@@ -84,6 +84,8 @@ public class Food_imformation extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
+                    time.setText("Thời gian chuẩn bị" + String.valueOf(recipe.getReadyInMinutes()) + " phút");
+
                     servings.setText(String.valueOf(recipe.getServings()));
                     StringBuilder stringBuilder = new StringBuilder();
                     List<Ingredients> ingredientList = recipe.getIngredients();
