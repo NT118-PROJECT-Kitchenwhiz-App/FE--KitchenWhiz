@@ -38,12 +38,14 @@ import retrofit2.Response;
 public class List_food extends AppCompatActivity {
 ListView listFood;
 EditText txt_Search;
+View noResultsLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_food);
         mapping();
+
         List<RecipeModel> arrDish = new ArrayList<>();
         Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
         listFood.setAdapter(dishAdapter);
@@ -93,6 +95,7 @@ EditText txt_Search;
     private void mapping() {
         listFood = findViewById(R.id.listFood);
         txt_Search = findViewById(R.id.home_search);
+        noResultsLayout = findViewById(R.id.no_results_layout);
     }
 
     private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter){
@@ -103,9 +106,19 @@ EditText txt_Search;
                     arr.clear();
                     arr.addAll(response.body());
                     dishAdapter.notifyDataSetChanged();
+                    if (arr.isEmpty()) {
+                        listFood.setVisibility(View.GONE);
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                    } else {
+                        listFood.setVisibility(View.VISIBLE);
+                        noResultsLayout.setVisibility(View.GONE);
+                    }
                 }
                 else if (response.code() == 404) {
-                    Toast.makeText(List_food.this, "Không tìm thấy món ăn cần tìm", Toast.LENGTH_SHORT).show();
+                    arr.clear();
+                    dishAdapter.updateRecipes(arr);
+                    listFood.setVisibility(View.GONE);
+                    noResultsLayout.setVisibility(View.VISIBLE);
                 }
                 else {
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
