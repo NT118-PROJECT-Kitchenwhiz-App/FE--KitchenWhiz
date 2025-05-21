@@ -20,6 +20,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
@@ -45,5 +46,8 @@ public interface ApiService {
     );
     @GET("recipe/searchByIngredient")
     Call<List<RecipeModel>> searchByIngredient(@Query("name") String name);
+
+    @GET("recipe/{id}")
+    Call<RecipeModel> getRecipeById(@Path("id") String id);
 
 }

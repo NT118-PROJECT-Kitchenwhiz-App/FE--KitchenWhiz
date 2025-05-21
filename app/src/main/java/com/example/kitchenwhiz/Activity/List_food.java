@@ -1,6 +1,7 @@
 package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
+import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -8,6 +9,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -41,40 +43,49 @@ EditText txt_Search;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_list_food);
+        mapping();
+        List<RecipeModel> arrDish = new ArrayList<>();
+        Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
+        listFood.setAdapter(dishAdapter);
+        Intent intent = getIntent();
+        String home_query = intent.getStringExtra("search_query");
+        if (!home_query.isEmpty()) {
+            txt_Search.setText(home_query);
+        }
+
+        searchRecipe(home_query, arrDish, dishAdapter);
+
+        txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                        (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
+
+                    String query = txt_Search.getText().toString().trim().toLowerCase();
+                    searchRecipe(query, arrDish, dishAdapter);
+
+                    InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(txt_Search.getWindowToken(), 0);
+
+                    return true;
+                }
+                return false;
+            }
+        });
+
+        listFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                RecipeModel recipeModel = arrDish.get(position);
+                Intent intent = new Intent(List_food.this, Food_imformation.class);
+                intent.putExtra("Foodid", recipeModel.getId());
+                startActivity(intent);
+            }
+        });
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            mapping();
-            List<RecipeModel> arrDish = new ArrayList<>();
-            Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
-            listFood.setAdapter(dishAdapter);
-            Intent intent = getIntent();
-            String home_query = intent.getStringExtra("search_query");
-
-            txt_Search.setText(home_query);
-
-            searchRecipe(home_query, arrDish, dishAdapter);
-
-            txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                            (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
-
-                        String query = txt_Search.getText().toString().trim().toLowerCase();
-                        searchRecipe(query, arrDish, dishAdapter);
-
-                        InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(txt_Search.getWindowToken(), 0);
-
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-
-
             return insets;
         });
     }
