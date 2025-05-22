@@ -167,6 +167,7 @@ public class Add_food extends AppCompatActivity {
 
     private void addIngredient() {
         ingredients.clear();
+        int count = 0;
         for (int i = 0; i < ingredientContainer.getChildCount(); i++){
             View row = ingredientContainer.getChildAt(i);
             EditText txtnameingre = row.findViewById(R.id.ingredient_name);
@@ -176,13 +177,28 @@ public class Add_food extends AppCompatActivity {
             String name_ingredients = txtnameingre.getText().toString().trim();
             String amount_ingredients = txtamount.getText().toString().trim();
             String unit_ingredients = txtunit.getText().toString().trim();
-            if (!name_ingredients.isEmpty() && !unit_ingredients.isEmpty() && !amount_ingredients.isEmpty()) {
+            if (count < 1) {
+                if (name_ingredients.isEmpty()) {
+                    Toast.makeText(this, "Vui lòng nhập ít nhất một nguyên liệu", Toast.LENGTH_SHORT).show();
+                }
+            }
+            if (!name_ingredients.isEmpty()) {
+                if ((!amount_ingredients.isEmpty() && unit_ingredients.isEmpty()) || (!unit_ingredients.isEmpty() && amount_ingredients.isEmpty())) {
+                    Toast.makeText(this, "Số lượng phải đi kèm đơn vị", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
-                    double double_amount = Double.parseDouble(amount_ingredients);
-                    ingredients.add(new Ingredients(name_ingredients, double_amount, unit_ingredients));
+                    if (amount_ingredients.isEmpty()) {
+                        ingredients.add(new Ingredients(name_ingredients, 0, null));
+                    }
+                    else {
+                        double double_amount = Double.parseDouble(amount_ingredients);
+                        ingredients.add(new Ingredients(name_ingredients, double_amount, unit_ingredients));
+                    }
 
                 } catch (Exception e) {
                     Toast.makeText(this, "Số lượng phải là số", Toast.LENGTH_SHORT).show();
+                    return;
                 }
 
             }

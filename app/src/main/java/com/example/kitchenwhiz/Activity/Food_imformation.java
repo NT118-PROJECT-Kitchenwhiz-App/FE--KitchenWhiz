@@ -42,6 +42,16 @@ public class Food_imformation extends AppCompatActivity {
         String id = intent.getStringExtra("Foodid");
         getInformation(id);
 
+        image_back.setOnClickListener(v -> onBackPressed());
+
+        favorite_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -84,7 +94,7 @@ public class Food_imformation extends AppCompatActivity {
                         throw new RuntimeException(e);
                     }
 
-                    time.setText("Thời gian chuẩn bị" + String.valueOf(recipe.getReadyInMinutes()) + " phút");
+                    time.setText("Thời gian chuẩn bị " + String.valueOf(recipe.getReadyInMinutes()) + " phút");
 
                     servings.setText(String.valueOf(recipe.getServings()));
                     StringBuilder stringBuilder = new StringBuilder();
@@ -92,9 +102,19 @@ public class Food_imformation extends AppCompatActivity {
                     if (ingredientList != null) {
                         for (Ingredients ingredient : ingredientList) {
                             StringBuilder s = new StringBuilder();
-                            s.append(ingredient.getName()).append(": ");
-                            s.append(ingredient.getAmount()).append(" ");
-                            s.append(ingredient.getUnit()).append("\n");
+                            s.append(ingredient.getName());
+                            double amount = ingredient.getAmount();
+                            if (amount > 0) {
+                                s.append(": ");
+                                if (amount == (int) amount) {
+                                    s.append((int) amount + " ");
+                                } else {
+                                    s.append(amount + " ");
+                                }
+                            }
+                            if (ingredient.getUnit() != null)
+                                s.append(ingredient.getUnit());
+                            s.append('\n');
                             stringBuilder.append(s.toString());
                         }
                         ingredients.setText(stringBuilder.toString());

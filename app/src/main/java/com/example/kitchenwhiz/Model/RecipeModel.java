@@ -10,7 +10,7 @@ public class RecipeModel {
 
     String summary;
     String instructions;
-    int readyInMinutes;
+    int ready_in_minutes;
     List<Ingredients> ingredients;
 
     public RecipeModel() {
@@ -18,7 +18,7 @@ public class RecipeModel {
         this.title = "Default Recipe";
         this.image = "";
         this.servings = 0;
-        this.readyInMinutes = 0;
+        this.ready_in_minutes = 0;
         this.ingredients = null;
         this.instructions = "";
     }
@@ -28,7 +28,7 @@ public class RecipeModel {
         this.title = title;
         this.image = image;
         this.servings = servings;
-        this.readyInMinutes = readyInMinutes;
+        this.ready_in_minutes = readyInMinutes;
         this.ingredients = ingredients;
         this.instructions = instructions;
     }
@@ -57,7 +57,7 @@ public class RecipeModel {
     }
 
     public int getReadyInMinutes() {
-        return readyInMinutes;
+        return ready_in_minutes;
     }
 
     public int getServings() {
