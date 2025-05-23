@@ -17,12 +17,15 @@ import androidx.core.view.WindowInsetsCompat;
 import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Model.Ingredients;
 import com.example.kitchenwhiz.Model.RecipeModel;
+import com.example.kitchenwhiz.Model.User;
+import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.ApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,6 +43,8 @@ public class Food_imformation extends AppCompatActivity {
         mapping();
         Intent intent = getIntent();
         String id = intent.getStringExtra("Foodid");
+        User user = (User) getIntent().getSerializableExtra("user");
+
         getInformation(id);
 
         image_back.setOnClickListener(v -> onBackPressed());
@@ -47,7 +52,8 @@ public class Food_imformation extends AppCompatActivity {
         favorite_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                UserFavoriteRequest userFavoriteRequest = new UserFavoriteRequest(user.getId(), id);
+                addUserFavoriteFood(userFavoriteRequest);
             }
         });
     }
@@ -128,6 +134,29 @@ public class Food_imformation extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
+                Log.d("FAIL_API_GET_FOOD", t.getMessage());
+
+            }
+        });
+    }
+    
+    private void addUserFavoriteFood(UserFavoriteRequest userFavoriteRequest) {
+        RetrofitClient.getApiService().addFavoriteRecipes(userFavoriteRequest).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Food_imformation.this, "Đã thêm món ăn vào yêu thích", Toast.LENGTH_SHORT).show();
+                    favorite_button.setImageResource(R.drawable.full_heart_icon);
+                }
+                else {
+                    Toast.makeText(Food_imformation.this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
+                    Log.d("API_FAVORITE", response.message());
+                }
+                
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });

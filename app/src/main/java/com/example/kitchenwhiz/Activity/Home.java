@@ -21,6 +21,7 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.google.android.material.imageview.ShapeableImageView;
 
@@ -41,8 +42,8 @@ SharedPreferences shared;
         String token = getToken();
 
         Intent intent = getIntent();
-        String username = intent.getStringExtra("username");
-        txtusername.setText(username);
+        User user = (User) getIntent().getSerializableExtra("user");
+        txtusername.setText(user.getUsername());
 
         tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -51,6 +52,7 @@ SharedPreferences shared;
                     String query = tbSearch.getText().toString().trim();
                     Intent intent = new Intent(Home.this, List_food.class);
                     intent.putExtra("search_query", query);
+                    intent.putExtra("user", user);
                     startActivity(intent);
                     return true;
                 }

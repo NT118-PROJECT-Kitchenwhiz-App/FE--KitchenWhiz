@@ -19,6 +19,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.example.kitchenwhiz.Model.LoginRequest;
+import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
@@ -34,9 +35,6 @@ Button btnlogin;
 EditText tbname, tbpass;
 TextView txtforgotpass, txtregister;
 SharedPreferences shared;
-String accesstoken = "";
-String getusername = "";
-String email = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,23 +83,19 @@ String email = "";
         txtregister = findViewById(R.id.sign_up);
     }
 
-    private void Login(LoginRequest request){
-        RetrofitClient.getApiService().login(request).enqueue(new Callback<ResponseBody>() {
+    private void Login(LoginRequest request) {
+        RetrofitClient.getApiService().login(request).enqueue(new Callback<User>() {
             @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+            public void onResponse(Call<User> call, Response<User> response) {
+                User user = response.body();
                 try {
-                    if (response.body() != null){
-                        String body = response.body().string();
-                        JSONObject json = new JSONObject(body);
-                        accesstoken = json.optString("token", null);
-                        getusername = json.optString("username",null);
-                        email = json.optString("email", null);
+                    if (response.body() != null) {
                         String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
                         shared = EncryptedSharedPreferences.create("KitchenWhizToken", masterKey, Login.this,
                                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
                         SharedPreferences.Editor editor = shared.edit();
-                        editor.putString("access_token", accesstoken.toString());
+                        editor.putString("access_token", user.getAccesstoken());
                         editor.apply();
                     }
                 } catch (Exception e) {
@@ -109,21 +103,18 @@ String email = "";
                     Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
                 }
 
-                if (response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Intent intent = new Intent(Login.this, Home.class);
-                    intent.putExtra("username", getusername);
-                    intent.putExtra("email", email);
+                    intent.putExtra("user", user);
                     startActivity(intent);
-                }
-                else{
+                } else {
                     Toast.makeText(Login.this, "Tên tài khoản hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
                     Log.d("FAILED LOGIN", response.errorBody().toString());
                 }
-
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<User> call, Throwable t) {
 
             }
         });

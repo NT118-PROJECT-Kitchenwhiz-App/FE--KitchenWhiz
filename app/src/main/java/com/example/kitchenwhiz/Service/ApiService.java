@@ -7,6 +7,8 @@ import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.Model.ResetPasswordRequest;
+import com.example.kitchenwhiz.Model.User;
+import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +39,7 @@ public interface ApiService {
     Call<ResponseBody> resetPassword(@Body ResetPasswordRequest request);
 
     @POST("user/login")
-    Call<ResponseBody> login(@Body LoginRequest request);
+    Call<User> login(@Body LoginRequest request);
     @Multipart
     @POST("recipe/addRecipe")
     Call<ResponseBody> addRecipe(
@@ -49,5 +51,8 @@ public interface ApiService {
 
     @GET("recipe/{id}")
     Call<RecipeModel> getRecipeById(@Path("id") String id);
+
+    @POST("user/addFavoriteRecipes")
+    Call<ResponseBody> addFavoriteRecipes(@Body UserFavoriteRequest userFavoriteRequest);
 
 }

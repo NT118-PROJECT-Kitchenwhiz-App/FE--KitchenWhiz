@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
 import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
+import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.ApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
@@ -50,6 +51,7 @@ View noResultsLayout;
         Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
         listFood.setAdapter(dishAdapter);
         Intent intent = getIntent();
+        User user = (User) getIntent().getSerializableExtra("user");
         String home_query = intent.getStringExtra("search_query");
         if (!home_query.isEmpty()) {
             txt_Search.setText(home_query);
@@ -81,6 +83,7 @@ View noResultsLayout;
                 RecipeModel recipeModel = arrDish.get(position);
                 Intent intent = new Intent(List_food.this, Food_imformation.class);
                 intent.putExtra("Foodid", recipeModel.getId());
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });

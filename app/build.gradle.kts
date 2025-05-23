@@ -33,6 +33,7 @@ android {
 
 dependencies {
     implementation ("com.google.code.gson:gson:2.9.0")
+    implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
     implementation ("androidx.security:security-crypto:1.0.0")
     implementation ("com.google.android.material:material:1.9.0")
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
