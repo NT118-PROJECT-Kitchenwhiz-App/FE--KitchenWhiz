@@ -5,6 +5,7 @@ import android.icu.text.Transliterator;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -40,6 +41,7 @@ public class List_food extends AppCompatActivity {
 ListView listFood;
 EditText txt_Search;
 View noResultsLayout;
+TextView setnofound;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,12 +54,20 @@ View noResultsLayout;
         listFood.setAdapter(dishAdapter);
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
-        String home_query = intent.getStringExtra("search_query");
-        if (!home_query.isEmpty()) {
-            txt_Search.setText(home_query);
-        }
+        String list = intent.getStringExtra("list");
+        Log.d("CHECK", list);
+        if (list.equals("search")) {
 
-        searchRecipe(home_query, arrDish, dishAdapter);
+            String home_query = intent.getStringExtra("search_query");
+            if (!home_query.isEmpty()) {
+                txt_Search.setText(home_query);
+            }
+
+            searchRecipe(home_query, arrDish, dishAdapter);
+        }
+        else if (list.equals("favorite")) {
+            getallFavoriteFoods(user.getId(), arrDish, dishAdapter);
+        }
 
         txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -93,6 +103,7 @@ View noResultsLayout;
         listFood = findViewById(R.id.listFood);
         txt_Search = findViewById(R.id.home_search);
         noResultsLayout = findViewById(R.id.no_results_layout);
+        setnofound = findViewById(R.id.explains);
     }
 
     private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter){
@@ -128,5 +139,41 @@ View noResultsLayout;
             }
 
     });
+    }
+
+    private void getallFavoriteFoods(String userid, List<RecipeModel> arr, Dish_Adapter dishAdapter) {
+        RetrofitClient.getApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()){
+                    arr.clear();
+                    arr.addAll(response.body());
+                    dishAdapter.notifyDataSetChanged();
+                    if (arr.isEmpty()) {
+                        listFood.setVisibility(View.GONE);
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                        setnofound.setText("Hãy kiểm tra chính tả hoặc\nthử từ khác nhé!");
+                    } else {
+                        listFood.setVisibility(View.VISIBLE);
+                        noResultsLayout.setVisibility(View.GONE);
+                    }
+                }
+                else if (response.code() == 404) {
+                    arr.clear();
+                    dishAdapter.updateRecipes(arr);
+                    listFood.setVisibility(View.GONE);
+                    noResultsLayout.setVisibility(View.VISIBLE);
+                    setnofound.setText("Có vẻ bạn chưa\nyêu thích món ăn nào");
+                }
+                else {
+                    Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
     }
 }

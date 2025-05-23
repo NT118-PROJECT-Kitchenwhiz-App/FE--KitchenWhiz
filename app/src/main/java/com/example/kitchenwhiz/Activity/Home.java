@@ -53,6 +53,7 @@ SharedPreferences shared;
                     Intent intent = new Intent(Home.this, List_food.class);
                     intent.putExtra("search_query", query);
                     intent.putExtra("user", user);
+                    intent.putExtra("list", "seach");
                     startActivity(intent);
                     return true;
                 }
@@ -65,6 +66,17 @@ SharedPreferences shared;
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, Add_food.class);
                 startActivity(intent);
+            }
+        });
+
+        favoriteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, List_food.class);
+                intent.putExtra("user", user);
+                intent.putExtra("list", "favorite");
+                startActivity(intent);
+
             }
         });
     }

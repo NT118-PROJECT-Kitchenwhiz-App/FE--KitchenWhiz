@@ -55,4 +55,7 @@ public interface ApiService {
     @POST("user/addFavoriteRecipes")
     Call<ResponseBody> addFavoriteRecipes(@Body UserFavoriteRequest userFavoriteRequest);
 
+    @GET("user/allFavoriteRecipes")
+    Call<List<RecipeModel>> allFavoriteRecipes(@Query("user_id") String user_id);
+
 }

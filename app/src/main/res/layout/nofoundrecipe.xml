@@ -20,6 +20,7 @@
             android:textColor="#A500EB"
             android:textSize="50dp"/>
         <TextView
+            android:id="@+id/explains"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hãy kiểm tra chính tả hoặc\nthử từ khác nhé!"
