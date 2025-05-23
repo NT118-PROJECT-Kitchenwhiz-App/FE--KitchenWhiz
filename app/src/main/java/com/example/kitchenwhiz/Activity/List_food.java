@@ -17,15 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
 import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
+import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.ApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
@@ -33,6 +37,7 @@ import com.example.kitchenwhiz.Service.RetrofitClient;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,13 +54,16 @@ TextView setnofound;
         setContentView(R.layout.activity_list_food);
         mapping();
 
-        List<RecipeModel> arrDish = new ArrayList<>();
-        Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish);
-        listFood.setAdapter(dishAdapter);
+
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
         String list = intent.getStringExtra("list");
         Log.d("CHECK", list);
+
+        List<RecipeModel> arrDish = new ArrayList<>();
+        Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish, user.getId());
+        listFood.setAdapter(dishAdapter);
+
         if (list.equals("search")) {
 
             String home_query = intent.getStringExtra("search_query");
@@ -67,6 +75,7 @@ TextView setnofound;
         }
         else if (list.equals("favorite")) {
             getallFavoriteFoods(user.getId(), arrDish, dishAdapter);
+
         }
 
         txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -145,6 +154,8 @@ TextView setnofound;
         RetrofitClient.getApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                Log.d("CHECK_DATA", response.message());
+                Log.d("CHECK", userid);
                 if (response.isSuccessful()){
                     arr.clear();
                     arr.addAll(response.body());
@@ -176,4 +187,6 @@ TextView setnofound;
             }
         });
     }
+
+
 }

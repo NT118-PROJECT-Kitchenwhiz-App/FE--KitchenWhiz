@@ -18,6 +18,7 @@ import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -55,7 +56,13 @@ public interface ApiService {
     @POST("user/addFavoriteRecipes")
     Call<ResponseBody> addFavoriteRecipes(@Body UserFavoriteRequest userFavoriteRequest);
 
-    @GET("user/allFavoriteRecipes")
-    Call<List<RecipeModel>> allFavoriteRecipes(@Query("user_id") String user_id);
+    @GET("user/allFavoriteRecipes/{user_id}")
+    Call<List<RecipeModel>> allFavoriteRecipes(@Path("user_id") String user_id);
+
+    @DELETE("user/{user_id}/favoriteRecipe/{recipe_id}")
+    Call<ResponseBody> DeletefavoriteRecipe(
+            @Path("user_id") String user_id,
+            @Path("recipe_id") String recipe_id
+    );
 
 }
