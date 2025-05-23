@@ -37,40 +37,33 @@ SharedPreferences shared;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            mapping();
-            String token = getToken();
+        mapping();
+        String token = getToken();
 
-            Intent intent = getIntent();
-            String username = intent.getStringExtra("username");
-            txtusername.setText(username);
+        Intent intent = getIntent();
+        String username = intent.getStringExtra("username");
+        txtusername.setText(username);
 
-            tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-                @Override
-                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                    if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
-                        String query = tbSearch.getText().toString().trim();
-                        Intent intent = new Intent(Home.this, List_food.class);
-                        intent.putExtra("search_query", query);
-                        startActivity(intent);
-                        return true;
-                    }
-                    return false;
-                }
-            });
-
-            viewCreatefood.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Home.this, Add_food.class);
+        tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
+                    String query = tbSearch.getText().toString().trim();
+                    Intent intent = new Intent(Home.this, List_food.class);
+                    intent.putExtra("search_query", query);
                     startActivity(intent);
+                    return true;
                 }
-            });
+                return false;
+            }
+        });
 
-
-            return insets;
+        viewCreatefood.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, Add_food.class);
+                startActivity(intent);
+            }
         });
     }
 

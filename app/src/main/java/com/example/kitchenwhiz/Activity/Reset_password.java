@@ -31,41 +31,36 @@ EditText tbpass, tbcfpass;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_reset_password);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            mapping();
-            btncancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Reset_password.this, Login.class);
-                    startActivity(intent);
-                }
-            });
-            Intent intent = getIntent();
-            String email = intent.getStringExtra("email");
+        mapping();
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Reset_password.this, Login.class);
+                startActivity(intent);
+            }
+        });
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
 
-            btnverify.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String newPassword = tbpass.getText().toString();
-                    if (newPassword.isEmpty()){
-                        Toast.makeText(Reset_password.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (!newPassword.equals(tbcfpass.getText().toString())){
-                        Toast.makeText(Reset_password.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    if (!validatepass(newPassword)){
-                        Toast.makeText(Reset_password.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    ResetPasswordRequest request = new ResetPasswordRequest(email, newPassword);
-                    ResetPass(request);
+        btnverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String newPassword = tbpass.getText().toString();
+                if (newPassword.isEmpty()){
+                    Toast.makeText(Reset_password.this, "Vui lòng nhập mật khẩu", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
-            return insets;
+                if (!newPassword.equals(tbcfpass.getText().toString())){
+                    Toast.makeText(Reset_password.this, "Mật khẩu không khớp", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if (!validatepass(newPassword)){
+                    Toast.makeText(Reset_password.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                ResetPasswordRequest request = new ResetPasswordRequest(email, newPassword);
+                ResetPass(request);
+            }
         });
     }
 

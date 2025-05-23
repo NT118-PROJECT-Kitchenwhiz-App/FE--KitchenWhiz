@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="#E9DEF2"
+    android:fitsSystemWindows="true"
     android:id="@+id/main">
 
     <LinearLayout

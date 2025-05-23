@@ -34,34 +34,29 @@ public class Verify_OTP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_verify_otp);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            mapping();
-            Intent intent = getIntent();
-            String email = intent.getStringExtra("email");
-            status = intent.getIntExtra("status", 0);
-            btncancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(Verify_OTP.this, Signup.class);
-                    startActivity(intent);
-                }
-            });
+        mapping();
+        Intent intent = getIntent();
+        String email = intent.getStringExtra("email");
+        status = intent.getIntExtra("status", 0);
+        btncancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Verify_OTP.this, Signup.class);
+                startActivity(intent);
+            }
+        });
 
-            btnverify.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String otpCode = tbotp.getText().toString().trim();
-                    if (otpCode == null){
-                        Toast.makeText(Verify_OTP.this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    OTPRequest request = new OTPRequest(email, otpCode);
-                    OTP(request);
+        btnverify.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String otpCode = tbotp.getText().toString().trim();
+                if (otpCode == null){
+                    Toast.makeText(Verify_OTP.this, "Vui lòng nhập mã OTP", Toast.LENGTH_SHORT).show();
+                    return;
                 }
-            });
-            return insets;
+                OTPRequest request = new OTPRequest(email, otpCode);
+                OTP(request);
+            }
         });
     }
 

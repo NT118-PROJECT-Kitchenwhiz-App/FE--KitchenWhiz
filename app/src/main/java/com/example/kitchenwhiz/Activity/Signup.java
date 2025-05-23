@@ -33,49 +33,44 @@ TextView txtlogin;
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_signup);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            mapping();
-            btnsignup.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String email = tbemail.getText().toString().trim();
-                    String username = tbusername.getText().toString().trim();
-                    String password = tbpass.getText().toString();
-                    String cfpassword = tbcfpass.getText().toString();
-                    if (!validateemail(email)){
-                        Toast.makeText(Signup.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    if (!validateusername(username)){
-                        Toast.makeText(Signup.this, "Tên tài khoản phải có độ dài từ 6-20 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    if (!validatepass(password)){
-                        Toast.makeText(Signup.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-
-                    if (!password.equals(cfpassword)){
-                        Toast.makeText(Signup.this, "Mật khẩu không khớp", Toast.LENGTH_LONG).show();
-                        return;
-                    }
-
-                    RegisterRequest request = new RegisterRequest(email, username, password);
-                    RegisterUser(request);
+        mapping();
+        btnsignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String email = tbemail.getText().toString().trim();
+                String username = tbusername.getText().toString().trim();
+                String password = tbpass.getText().toString();
+                String cfpassword = tbcfpass.getText().toString();
+                if (!validateemail(email)){
+                    Toast.makeText(Signup.this, "Vui lòng nhập đúng định dạng email", Toast.LENGTH_LONG).show();
+                    return;
                 }
-            });
-                    txtlogin.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(Signup.this, Login.class);
-                            startActivity(intent);
-                        }
-                    });
-            return insets;
+
+                if (!validateusername(username)){
+                    Toast.makeText(Signup.this, "Tên tài khoản phải có độ dài từ 6-20 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if (!validatepass(password)){
+                    Toast.makeText(Signup.this, "Mật khẩu phải có độ dài ít nhất 6 kí tự", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (!password.equals(cfpassword)){
+                    Toast.makeText(Signup.this, "Mật khẩu không khớp", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                RegisterRequest request = new RegisterRequest(email, username, password);
+                RegisterUser(request);
+            }
+        });
+        txtlogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Signup.this, Login.class);
+                startActivity(intent);
+            }
         });
     }
 
