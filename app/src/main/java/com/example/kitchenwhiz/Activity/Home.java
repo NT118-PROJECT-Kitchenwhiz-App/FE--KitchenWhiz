@@ -89,6 +89,16 @@ SharedPreferences shared;
                 startActivity(intent);
             }
         });
+
+        suggestedIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, List_food.class);
+                intent.putExtra("user", user);
+                intent.putExtra("list", "top");
+                startActivity(intent);
+            }
+        });
     }
 
     private void mapping(){

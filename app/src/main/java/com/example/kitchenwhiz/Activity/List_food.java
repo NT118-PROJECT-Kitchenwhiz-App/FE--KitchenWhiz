@@ -77,8 +77,11 @@ TextView setnofound;
             getallFavoriteFoods(user.getId(), arrDish, dishAdapter);
 
         }
-        else {
+        else if (list.equals("viewed")){
             getViewedFood(user.getId(), dishAdapter, arrDish);
+        }
+        else if (list.equals("top")) {
+            getTopFoods(dishAdapter, arrDish);
         }
 
         txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -214,6 +217,42 @@ TextView setnofound;
                     listFood.setVisibility(View.GONE);
                     noResultsLayout.setVisibility(View.VISIBLE);
                     setnofound.setText("Có vẻ bạn chưa từng\nxem món ăn nào");
+                }
+                else {
+                    Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getTopFoods(Dish_Adapter dishAdapter, List<RecipeModel> arr) {
+        RetrofitClient.getApiService().likeRecipes().enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                if (response.isSuccessful()){
+                    arr.clear();
+                    arr.addAll(response.body());
+                    dishAdapter.notifyDataSetChanged();
+                    if (arr.isEmpty()) {
+                        listFood.setVisibility(View.GONE);
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                        setnofound.setText("Hiện tại chúng tôi chưa biết\nnên gợi ý bạn món nào");
+                    } else {
+                        listFood.setVisibility(View.VISIBLE);
+                        noResultsLayout.setVisibility(View.GONE);
+                    }
+                }
+                else if (response.code() == 404) {
+                    arr.clear();
+                    dishAdapter.updateRecipes(arr);
+                    listFood.setVisibility(View.GONE);
+                    noResultsLayout.setVisibility(View.VISIBLE);
+                    setnofound.setText("Hiện tại chúng tôi chưa biết\nnên gợi ý bạn món nào");
                 }
                 else {
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
