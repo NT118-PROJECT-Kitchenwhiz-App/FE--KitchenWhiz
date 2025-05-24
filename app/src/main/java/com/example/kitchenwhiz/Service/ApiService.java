@@ -73,4 +73,7 @@ public interface ApiService {
 
     @GET("recipe/likeRecipes")
     Call<List<RecipeModel>> likeRecipes();
+
+    @GET("recipe/randomRecipe")
+    Call<RecipeModel> randomRecipe();
 }

@@ -21,14 +21,27 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
+import com.bumptech.glide.Glide;
+import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Service.RetrofitClient;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.util.Calendar;
+import java.util.TimeZone;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class Home extends AppCompatActivity {
-TextView txtusername;
+TextView txtusername, txtwhattoeat, txthome_food, txtdes;
 EditText tbSearch;
-ShapeableImageView avatar;
+ShapeableImageView avatar, image_food;
 View viewRandomfood, viewCreatefood;
 ImageView favoriteIcon, recentlyIcon, suggestedIcon;
 SharedPreferences shared;
@@ -44,6 +57,10 @@ SharedPreferences shared;
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
         txtusername.setText(user.getUsername());
+
+        getTime(txtwhattoeat);
+        RandomFood(user);
+
 
         tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -105,11 +122,15 @@ SharedPreferences shared;
         txtusername = findViewById(R.id.txtname);
         tbSearch = findViewById(R.id.home_search);
         avatar = findViewById(R.id.avatar);
+        image_food = findViewById(R.id.home_img_food);
         viewRandomfood = findViewById(R.id.rcmrandomfood);
         viewCreatefood = findViewById(R.id.createdish);
         favoriteIcon = findViewById(R.id.btnfavorite);
         recentlyIcon = findViewById(R.id.btncooked);
         suggestedIcon = findViewById(R.id.btnsuggested);
+        txtwhattoeat = findViewById(R.id.txtwhattoeat);
+        txthome_food = findViewById(R.id.txthome_food);
+        txtdes = findViewById(R.id.txtdescrip_food);
     }
 
     private String getToken(){
@@ -132,5 +153,72 @@ SharedPreferences shared;
             return null;
         }
         return token;
+    }
+
+    private void getTime(TextView txtwhattoeat) {
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int totalMinutes = hour * 60 + minute;
+
+        if (inRange(totalMinutes, 4*60, 9*60+59)) {
+            txtwhattoeat.setText("Kitchenwhiz lo bữa sáng!");
+        }
+        else if (inRange(totalMinutes, 10*60, 14*60+59)) {
+            txtwhattoeat.setText("Trưa ăn gì? Kitchenhiz lo");
+        }
+        else if (inRange(totalMinutes, 15*60, 19*60 + 59)){
+            txtwhattoeat.setText("Kitchenwhiz – Tối ngon!");
+        }
+        else {
+            txtwhattoeat.setText("Đói khuya? Có Kitchenwhiz");
+        }
+    }
+
+    private static boolean inRange(int value, int start, int end) {
+        return value >= start && value <= end;
+    }
+
+    private void RandomFood(User user) {
+        RetrofitClient.getApiService().randomRecipe().enqueue(new Callback<RecipeModel>() {
+            @Override
+            public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
+                try {
+
+                    if (response.isSuccessful() && response.body() != null) {
+                        RecipeModel recipeModel = response.body();
+                        Glide.with(Home.this)
+                                .load(recipeModel.getImage())
+                                .placeholder(R.drawable.loading_icon)
+                                .error(R.drawable.error)
+                                .into(image_food);
+                        txthome_food.setText(recipeModel.getTitle());
+                        txtdes.setText(recipeModel.getSummary());
+                        String foodid = recipeModel.getId();
+                        viewRandomfood.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                Intent intent = new Intent(Home.this, Food_imformation.class);
+                                intent.putExtra("Foodid", foodid);
+                                intent.putExtra("user", user);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    else {
+                        image_food.setImageResource(R.drawable.error);
+                        txthome_food.setText("Hết ý tưởng món rồi!");
+                        txtdes.setText("");
+                }} catch (Exception e) {
+                    Log.d("API_RANDOM", e.getMessage());
+                    throw new RuntimeException(e);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<RecipeModel> call, Throwable t) {
+
+            }
+        });
     }
 }

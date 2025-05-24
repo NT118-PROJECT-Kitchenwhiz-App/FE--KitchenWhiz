@@ -87,6 +87,7 @@ public class Food_imformation extends AppCompatActivity {
                             Glide.with(Food_imformation.this)
                                     .load(recipe.getImage())
                                     .placeholder(R.drawable.loading_icon)
+                                    .error(R.drawable.error)
                                     .into(image_food);
                         }
                         else {

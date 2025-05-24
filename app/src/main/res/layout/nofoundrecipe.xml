@@ -16,9 +16,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/font_title"
-            android:text="NO FOUND"
+            android:text="KHÔNG TÌM THẤY"
             android:textColor="#A500EB"
-            android:textSize="50dp"/>
+            android:textSize="44dp"/>
         <TextView
             android:id="@+id/explains"
             android:layout_width="wrap_content"

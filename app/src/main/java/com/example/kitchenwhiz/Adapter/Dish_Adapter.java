@@ -75,6 +75,7 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
         Glide.with(ct)
                 .load(recipe.getImage())
                 .placeholder(R.drawable.loading_icon)
+                .error(R.drawable.error)
                 .into(foodImg);
 
 
