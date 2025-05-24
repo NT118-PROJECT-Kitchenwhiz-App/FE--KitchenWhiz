@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
@@ -19,6 +20,8 @@ import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.google.android.material.appbar.AppBarLayout;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
 
 import java.util.List;
 
@@ -30,6 +33,9 @@ import retrofit2.Response;
 public class Food_information extends AppCompatActivity {
     ImageView image_food, image_back, favorite_button;
     TextView titlefood, servings, time, ingredients, step;
+    CollapsingToolbarLayout collapsingToolbarLayout;
+    Toolbar toolbar;
+    AppBarLayout appBarLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +54,27 @@ public class Food_information extends AppCompatActivity {
 
         UserFavoriteRequest userViewedRequest = new UserFavoriteRequest(user.getId(), id);
         addViewedFavoriteFood(userViewedRequest);
+        setSupportActionBar(toolbar);
+
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            boolean isVisible = true;
+
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) >= appBarLayout.getTotalScrollRange()) {
+                    if (isVisible) {
+                        favorite_button.setVisibility(View.GONE);
+                        isVisible = false;
+                    }
+                } else {
+                    if (!isVisible) {
+                        favorite_button.setVisibility(View.VISIBLE);
+                        isVisible = true;
+                    }
+                }
+            }
+        });
+
 
         image_back.setOnClickListener(v -> onBackPressed());
 
@@ -81,6 +108,9 @@ public class Food_information extends AppCompatActivity {
         time = findViewById(R.id.time);
         ingredients = findViewById(R.id.ingredients);
         step = findViewById(R.id.step);
+        collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
+        toolbar = findViewById(R.id.toolbar);
+        appBarLayout = findViewById(R.id.app_bar_layout);
     }
 
     private void getInformation(String id){
@@ -90,6 +120,7 @@ public class Food_information extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     RecipeModel recipe = response.body();
                     titlefood.setText(recipe.getTitle());
+                    collapsingToolbarLayout.setTitle(recipe.getTitle());
                     try {
                         if (!recipe.getImage().isEmpty()) {
                             Glide.with(Food_information.this)
