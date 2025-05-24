@@ -1,5 +1,6 @@
 package com.example.kitchenwhiz.Model;
 
+import java.util.Date;
 import java.util.List;
 
 public class RecipeModel {
@@ -12,6 +13,8 @@ public class RecipeModel {
     String instructions;
     int ready_in_minutes;
     List<Ingredients> ingredients;
+    int likes;
+    Date view_at;
 
     public RecipeModel() {
         this._id = "";

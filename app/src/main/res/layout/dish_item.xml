@@ -82,5 +82,15 @@
             android:text="Creamy Homemade Tomato and Soup"
             android:textColor="#7A6ED3"
             android:textSize="25dp" />
+        <TextView
+            android:id="@+id/fav_title"
+            android:layout_width="360dp"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/regular_font"
+            android:paddingLeft="250dp"
+            android:paddingTop="100dp"
+            android:text="So luot tim: 20"
+            android:textColor="#7A6ED3"
+            android:textSize="16dp" />
     </RelativeLayout>
 </RelativeLayout>
