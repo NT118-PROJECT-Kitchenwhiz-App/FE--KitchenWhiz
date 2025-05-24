@@ -24,9 +24,11 @@ public class RecipeModel {
         this.ready_in_minutes = 0;
         this.ingredients = null;
         this.instructions = "";
+        this.likes = 0;
+
     }
 
-    public RecipeModel(String _id, String title, String image, int servings, int readyInMinutes, List<Ingredients> ingredients, String instructions) {
+    public RecipeModel(String _id, String title, String image, int servings, int readyInMinutes, List<Ingredients> ingredients, String instructions, int liked, Date view_at) {
         this._id = _id;
         this.title = title;
         this.image = image;
@@ -34,6 +36,8 @@ public class RecipeModel {
         this.ready_in_minutes = readyInMinutes;
         this.ingredients = ingredients;
         this.instructions = instructions;
+        this.likes = liked;
+        this.view_at = view_at;
     }
     public String getImage() {
         return image;
@@ -45,6 +49,14 @@ public class RecipeModel {
 
     public String getTitle() {
         return title;
+    }
+
+    public Date getView_at() {
+        return view_at;
+    }
+
+    public int getLikes() {
+        return likes;
     }
 
     public List<Ingredients> getIngredients() {

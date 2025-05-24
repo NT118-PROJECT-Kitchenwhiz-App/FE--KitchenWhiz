@@ -61,7 +61,7 @@ TextView setnofound;
         Log.d("CHECK", list);
 
         List<RecipeModel> arrDish = new ArrayList<>();
-        Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish, user.getId());
+        Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish, list);
         listFood.setAdapter(dishAdapter);
 
         if (list.equals("search")) {

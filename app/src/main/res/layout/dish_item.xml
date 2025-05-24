@@ -87,9 +87,9 @@
             android:layout_width="360dp"
             android:layout_height="match_parent"
             android:fontFamily="@font/regular_font"
-            android:paddingLeft="250dp"
+            android:paddingLeft="220dp"
             android:paddingTop="100dp"
-            android:text="So luot tim: 20"
+            android:text="Da xem: 10/10/2024"
             android:textColor="#7A6ED3"
             android:textSize="16dp" />
     </RelativeLayout>

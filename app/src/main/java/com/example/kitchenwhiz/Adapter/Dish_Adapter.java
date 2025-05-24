@@ -24,6 +24,7 @@ import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,14 +37,14 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
     private Context ct;
     private int resource;
     private List<RecipeModel> recipeModelsArr;
-    private String userid;
+    private String list;
 
-    public Dish_Adapter(@NonNull Context context, int resource, @NonNull List<RecipeModel> object, String userid) {
+    public Dish_Adapter(@NonNull Context context, int resource, @NonNull List<RecipeModel> object, String list) {
         super(context, resource, object);
         ct = context;
         this.resource = resource;
         this.recipeModelsArr = object;
-        this.userid = userid;
+        this.list = list;
     }
 
     @NonNull
@@ -58,8 +59,18 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
 
         TextView title = view.findViewById(R.id.title_dish);
         ShapeableImageView foodImg = view.findViewById(R.id.food_img);
+        TextView liked_viewed = view.findViewById(R.id.fav_title);
         RecipeModel recipe = recipeModelsArr.get(position);
         title.setText(recipe.getTitle().toUpperCase());
+
+        if (list.equals("viewed")) {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            liked_viewed.setText("Đã xem: " + sdf.format(recipe.getView_at()));
+        }
+        else {
+            liked_viewed.setText("Số lượt tim: " + String.valueOf(recipe.getLikes()));
+        }
+
 
         Glide.with(ct)
                 .load(recipe.getImage())
@@ -79,8 +90,9 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
 
 
     private static class ViewHolder {
-        TextView txt_title;
+        TextView txt_title, txt_liked_viewed;
         ImageView image_dish;
+
     }
 
 
