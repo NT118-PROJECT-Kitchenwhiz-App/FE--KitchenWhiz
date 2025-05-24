@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowInsets;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +39,7 @@ import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -45,6 +51,7 @@ ShapeableImageView avatar, image_food;
 View viewRandomfood, viewCreatefood;
 ImageView favoriteIcon, recentlyIcon, suggestedIcon;
 SharedPreferences shared;
+GifImageView fact_food;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,6 +123,20 @@ SharedPreferences shared;
                 startActivity(intent);
             }
         });
+
+        fact_food.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fact_food.post(() -> {
+                    int[] location = new int[2];
+                    fact_food.getLocationOnScreen(location);
+                    int x = location[0] - fact_food.getWidth() - 730;
+                    int y = location[1];
+
+                    showPopup(x, y);
+                });
+            }
+        });
     }
 
     private void mapping(){
@@ -131,6 +152,7 @@ SharedPreferences shared;
         txtwhattoeat = findViewById(R.id.txtwhattoeat);
         txthome_food = findViewById(R.id.txthome_food);
         txtdes = findViewById(R.id.txtdescrip_food);
+        fact_food = findViewById(R.id.random_fact);
     }
 
     private String getToken(){
@@ -220,5 +242,19 @@ SharedPreferences shared;
 
             }
         });
+    }
+
+    private void showPopup(int x, int y) {
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup, null);
+
+        PopupWindow popupWindow = new PopupWindow(popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        popupWindow.showAtLocation(getWindow().getDecorView().getRootView(), Gravity.NO_GRAVITY, x, y);
+
+
+        TextView popupText = popupView.findViewById(R.id.popup_text);
     }
 }
