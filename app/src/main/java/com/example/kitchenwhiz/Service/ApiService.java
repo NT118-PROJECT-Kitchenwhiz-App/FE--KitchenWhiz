@@ -65,4 +65,7 @@ public interface ApiService {
             @Path("recipe_id") String recipe_id
     );
 
+    @POST("user/addViewedRecipes")
+    Call<ResponseBody> addViewedRecipes(@Body UserFavoriteRequest userviewedRequest);
+
 }

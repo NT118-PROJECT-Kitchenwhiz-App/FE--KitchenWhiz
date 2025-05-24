@@ -53,7 +53,7 @@ SharedPreferences shared;
                     Intent intent = new Intent(Home.this, List_food.class);
                     intent.putExtra("search_query", query);
                     intent.putExtra("user", user);
-                    intent.putExtra("list", "seach");
+                    intent.putExtra("list", "search");
                     startActivity(intent);
                     return true;
                 }

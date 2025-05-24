@@ -41,11 +41,15 @@ public class Food_imformation extends AppCompatActivity {
         setContentView(R.layout.activity_food_imformation);
 
         mapping();
+
         Intent intent = getIntent();
         String id = intent.getStringExtra("Foodid");
         User user = (User) getIntent().getSerializableExtra("user");
 
         getInformation(id);
+
+        UserFavoriteRequest userViewedRequest = new UserFavoriteRequest(user.getId(), id);
+        addViewedFavoriteFood(userViewedRequest);
 
         image_back.setOnClickListener(v -> onBackPressed());
 
@@ -153,6 +157,23 @@ public class Food_imformation extends AppCompatActivity {
                     Log.d("API_FAVORITE", response.message());
                 }
                 
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+    
+    private void addViewedFavoriteFood(UserFavoriteRequest userViewedRequest){
+        RetrofitClient.getApiService().addViewedRecipes(userViewedRequest).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.d("API_VIEWED", response.code() + " " + response.body().toString());
+                if (!response.isSuccessful()) {
+                    Toast.makeText(Food_imformation.this, "Không thể thêm món ăn vào danh sách đã xem", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

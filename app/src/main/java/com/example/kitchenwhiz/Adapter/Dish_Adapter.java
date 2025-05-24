@@ -66,10 +66,6 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
                 .placeholder(R.drawable.loading_icon)
                 .into(foodImg);
 
-        view.setOnLongClickListener(v -> {
-            showPopupMenu(v, position);
-            return true;
-        });
 
         return view;
     }
@@ -80,51 +76,7 @@ public class Dish_Adapter extends ArrayAdapter<RecipeModel> {
         this.recipeModelsArr.addAll(newRecipes);
         notifyDataSetChanged();
     }
-    public void removeItem(int position) {
-        if (recipeModelsArr != null && position >= 0 && position < recipeModelsArr.size()) {
-            recipeModelsArr.remove(position);
-            notifyDataSetChanged();
-        }
-    }
 
-    private void showPopupMenu(View view, int position) {
-        PopupMenu popupMenu = new PopupMenu(ct, view, Gravity.END);
-        popupMenu.getMenuInflater().inflate(R.menu.popup, popupMenu.getMenu());
-
-        popupMenu.setOnMenuItemClickListener(item -> {
-            if (item.getItemId() == R.id.menu_delete) {
-                RecipeModel recipe = recipeModelsArr.get(position);
-
-                deleteFavoriteFood(userid, recipe.getId(), position);
-
-                return true;
-            }
-            return false;
-        });
-
-        popupMenu.show();
-    }
-
-    private void deleteFavoriteFood(String userid, String recipeid, int position){
-        RetrofitClient.getApiService().DeletefavoriteRecipe(userid, recipeid).enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(ct, "Xóa thành công món ăn này khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
-                    removeItem(position);
-                }
-                else {
-                    Toast.makeText(ct, "Lỗi", Toast.LENGTH_SHORT).show();
-                    Log.d("API_DELETE_FAVORITE_FOOD", response.errorBody().toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
 
     private static class ViewHolder {
         TextView txt_title;
