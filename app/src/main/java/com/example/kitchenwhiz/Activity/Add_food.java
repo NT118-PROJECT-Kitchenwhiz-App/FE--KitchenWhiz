@@ -92,6 +92,7 @@ public class Add_food extends AppCompatActivity {
             btnadd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    btnadd.setEnabled(false);
                     String name = txtname.getText().toString().trim();
                     String des = txtdes.getText().toString().trim();
                     String ins = txtins.getText().toString().trim();
@@ -111,8 +112,8 @@ public class Add_food extends AppCompatActivity {
                         String recipeInfoJson = gson.toJson(info);
 
                         if (recipeInfoJson == null || recipeInfoJson.isEmpty()) {
-                            Toast.makeText(Add_food.this, "Error creating recipe JSON", Toast.LENGTH_SHORT).show();
-                            Log.e("ADD_FOOD", "recipeInfoJson is null or empty");
+                            Toast.makeText(Add_food.this, "Lỗi JSON", Toast.LENGTH_SHORT).show();
+                            Log.e("ADD_FOOD", "Json is null or empty");
                             return;
                         }
 
@@ -122,6 +123,7 @@ public class Add_food extends AppCompatActivity {
                     catch (Exception ex) {
                         Log.d("ADD_FOOD", ex.getMessage());
                     }
+                    btnadd.setEnabled(true);
                 }
             });
     }
