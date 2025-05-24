@@ -84,7 +84,7 @@ SharedPreferences shared;
     }
 
     private void Login(LoginRequest request) {
-        RetrofitClient.getApiService().login(request).enqueue(new Callback<User>() {
+        RetrofitClient.getUserApiService().login(request).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
                 User user = response.body();

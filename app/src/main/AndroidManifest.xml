@@ -22,7 +22,7 @@
             android:name=".Activity.Add_food"
             android:exported="false" />
         <activity
-            android:name=".Activity.Food_imformation"
+            android:name=".Activity.Food_information"
             android:exported="false" />
         <activity
             android:name=".Activity.List_food"

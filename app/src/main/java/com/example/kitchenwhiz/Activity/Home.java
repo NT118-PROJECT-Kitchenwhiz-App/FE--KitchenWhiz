@@ -8,8 +8,6 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowInsets;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -18,11 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
@@ -33,9 +27,6 @@ import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.time.LocalTime;
-import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -202,7 +193,7 @@ GifImageView fact_food;
     }
 
     private void RandomFood(User user) {
-        RetrofitClient.getApiService().randomRecipe().enqueue(new Callback<RecipeModel>() {
+        RetrofitClient.getRecipeApiService().randomRecipe().enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 try {
@@ -220,7 +211,7 @@ GifImageView fact_food;
                         viewRandomfood.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(Home.this, Food_imformation.class);
+                                Intent intent = new Intent(Home.this, Food_information.class);
                                 intent.putExtra("Foodid", foodid);
                                 intent.putExtra("user", user);
                                 startActivity(intent);

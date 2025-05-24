@@ -19,15 +19,13 @@ import androidx.activity.EdgeToEdge;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.kitchenwhiz.Model.Ingredients;
 import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.R;
-import com.example.kitchenwhiz.Service.ApiService;
+import com.example.kitchenwhiz.Service.RecipeApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.example.kitchenwhiz.Service.UserApiService;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -44,7 +42,6 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 public class Add_food extends AppCompatActivity {
     ImageView image;
@@ -218,7 +215,7 @@ public class Add_food extends AppCompatActivity {
         RequestBody jsonRequestBody = RequestBody.create(
                 MediaType.parse("application/json"), recipeInfoJson
         );
-        ApiService apiService = RetrofitClient.getApiService();
+        RecipeApiService apiService = RetrofitClient.getRecipeApiService();
         Call<ResponseBody> call = apiService.addRecipe(imagePart, jsonRequestBody);
 
         call.enqueue(new Callback<ResponseBody>() {

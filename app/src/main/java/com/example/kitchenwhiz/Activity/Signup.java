@@ -98,7 +98,7 @@ TextView txtlogin;
     }
 
     private void RegisterUser(RegisterRequest request){
-        RetrofitClient.getApiService().registerUser(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService().registerUser(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 int statusCode = response.code();/*

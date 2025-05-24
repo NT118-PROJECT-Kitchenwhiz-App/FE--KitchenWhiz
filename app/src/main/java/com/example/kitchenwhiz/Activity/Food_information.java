@@ -10,9 +10,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Model.Ingredients;
@@ -20,7 +17,6 @@ import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
-import com.example.kitchenwhiz.Service.ApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
 import java.util.List;
@@ -30,7 +26,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class Food_imformation extends AppCompatActivity {
+public class Food_information extends AppCompatActivity {
     ImageView image_food, image_back, favorite_button;
     TextView titlefood, servings, time, ingredients, step;
 
@@ -38,7 +34,7 @@ public class Food_imformation extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_food_imformation);
+        setContentView(R.layout.activity_food_information);
 
         mapping();
 
@@ -74,9 +70,7 @@ public class Food_imformation extends AppCompatActivity {
     }
 
     private void getInformation(String id){
-        ApiService apiService = RetrofitClient.getApiService();
-        Call<RecipeModel> call = apiService.getRecipeById(id);
-        call.enqueue(new Callback<RecipeModel>() {
+        RetrofitClient.getRecipeApiService().getRecipeById(id).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
@@ -84,7 +78,7 @@ public class Food_imformation extends AppCompatActivity {
                     titlefood.setText(recipe.getTitle());
                     try {
                         if (!recipe.getImage().isEmpty()) {
-                            Glide.with(Food_imformation.this)
+                            Glide.with(Food_information.this)
                                     .load(recipe.getImage())
                                     .placeholder(R.drawable.loading_icon)
                                     .error(R.drawable.error)
@@ -132,7 +126,7 @@ public class Food_imformation extends AppCompatActivity {
 
                 }
                 else {
-                    Toast.makeText(Food_imformation.this, "Lỗi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Food_information.this, "Lỗi", Toast.LENGTH_SHORT).show();
                     Log.d("API_GETFOODBYID", response.errorBody().toString());
                 }
             }
@@ -146,15 +140,15 @@ public class Food_imformation extends AppCompatActivity {
     }
     
     private void addUserFavoriteFood(UserFavoriteRequest userFavoriteRequest) {
-        RetrofitClient.getApiService().addFavoriteRecipes(userFavoriteRequest).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService().addFavoriteRecipes(userFavoriteRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    Toast.makeText(Food_imformation.this, "Đã thêm món ăn vào yêu thích", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Food_information.this, "Đã thêm món ăn vào yêu thích", Toast.LENGTH_SHORT).show();
                     favorite_button.setImageResource(R.drawable.full_heart_icon);
                 }
                 else {
-                    Toast.makeText(Food_imformation.this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Food_information.this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
                     Log.d("API_FAVORITE", response.message());
                 }
                 
@@ -168,12 +162,12 @@ public class Food_imformation extends AppCompatActivity {
     }
     
     private void addViewedFavoriteFood(UserFavoriteRequest userViewedRequest){
-        RetrofitClient.getApiService().addViewedRecipes(userViewedRequest).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService().addViewedRecipes(userViewedRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_VIEWED", response.code() + " " + response.body().toString());
                 if (!response.isSuccessful()) {
-                    Toast.makeText(Food_imformation.this, "Không thể thêm món ăn vào danh sách đã xem", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Food_information.this, "Không thể thêm món ăn vào danh sách đã xem", Toast.LENGTH_SHORT).show();
                 }
             }
 

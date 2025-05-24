@@ -1,10 +1,7 @@
 package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
-import android.icu.text.Transliterator;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -17,27 +14,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
-import com.example.kitchenwhiz.Model.RecipeInfo;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
-import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
-import com.example.kitchenwhiz.Service.ApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -106,7 +93,7 @@ TextView setnofound;
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 RecipeModel recipeModel = arrDish.get(position);
-                Intent intent = new Intent(List_food.this, Food_imformation.class);
+                Intent intent = new Intent(List_food.this, Food_information.class);
                 intent.putExtra("Foodid", recipeModel.getId());
                 intent.putExtra("user", user);
                 startActivity(intent);
@@ -122,7 +109,7 @@ TextView setnofound;
     }
 
     private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter){
-        RetrofitClient.getApiService().searchByIngredient(name).enqueue(new Callback<List<RecipeModel>>() {
+        RetrofitClient.getRecipeApiService().searchByIngredient(name).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){
@@ -157,7 +144,7 @@ TextView setnofound;
     }
 
     private void getallFavoriteFoods(String userid, List<RecipeModel> arr, Dish_Adapter dishAdapter) {
-        RetrofitClient.getApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+        RetrofitClient.getUserApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 Log.d("CHECK_DATA", response.message());
@@ -195,7 +182,7 @@ TextView setnofound;
     }
 
     private void getViewedFood(String userid, Dish_Adapter dishAdapter, List<RecipeModel> arr) {
-        RetrofitClient.getApiService().allViewRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+        RetrofitClient.getUserApiService().allViewRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){
@@ -231,7 +218,7 @@ TextView setnofound;
     }
 
     public void getTopFoods(Dish_Adapter dishAdapter, List<RecipeModel> arr) {
-        RetrofitClient.getApiService().likeRecipes().enqueue(new Callback<List<RecipeModel>>() {
+        RetrofitClient.getRecipeApiService().likeRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){

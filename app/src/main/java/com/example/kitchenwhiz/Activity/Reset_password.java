@@ -74,7 +74,7 @@ EditText tbpass, tbcfpass;
         return (password.length()>=6);
     }
     private void ResetPass(ResetPasswordRequest request){
-        RetrofitClient.getApiService().resetPassword(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService().resetPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){

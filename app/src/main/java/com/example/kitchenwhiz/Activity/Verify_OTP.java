@@ -68,7 +68,7 @@ public class Verify_OTP extends AppCompatActivity {
     }
 
     private void OTP(OTPRequest request){
-        RetrofitClient.getApiService().verifyOTP(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService().verifyOTP(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String message = "";
