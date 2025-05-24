@@ -58,4 +58,9 @@ public interface UserApiService {
     @GET("user/allViewRecipes/{user_id}")
     Call<List<RecipeModel>> allViewRecipes(@Path("user_id") String user_id);
 
+    @DELETE("user/{user_id}/favoriteRecipe/{recipe_id}")
+    Call<ResponseBody> deleteFavoriteRecipe(
+            @Path("user_id") String user_id,
+            @Path("recipe_id") String recipe_id);
+
 }

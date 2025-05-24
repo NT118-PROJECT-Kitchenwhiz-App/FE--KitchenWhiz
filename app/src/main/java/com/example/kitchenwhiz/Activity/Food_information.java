@@ -12,6 +12,7 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
+import com.example.kitchenwhiz.Adapter.Dish_Adapter;
 import com.example.kitchenwhiz.Model.Ingredients;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
@@ -43,6 +44,7 @@ public class Food_information extends AppCompatActivity {
         User user = (User) getIntent().getSerializableExtra("user");
 
         getInformation(id);
+        checkFavoriteFood(user.getId(), id);
 
         UserFavoriteRequest userViewedRequest = new UserFavoriteRequest(user.getId(), id);
         addViewedFavoriteFood(userViewedRequest);
@@ -53,7 +55,19 @@ public class Food_information extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 UserFavoriteRequest userFavoriteRequest = new UserFavoriteRequest(user.getId(), id);
-                addUserFavoriteFood(userFavoriteRequest);
+                int currentImageId = (favorite_button.getTag() != null)
+                        ? (int) favorite_button.getTag()
+                        : R.drawable.heart_icon_2048x1782_hc4h9q6s;
+
+                if (currentImageId == R.drawable.heart_icon_2048x1782_hc4h9q6s) {
+                    addUserFavoriteFood(userFavoriteRequest);
+                    favorite_button.setImageResource(R.drawable.full_heart_icon);
+                    favorite_button.setTag(R.drawable.full_heart_icon);
+                } else {
+                    deleteFavoriteFood(userFavoriteRequest);
+                    favorite_button.setImageResource(R.drawable.heart_icon_2048x1782_hc4h9q6s);
+                    favorite_button.setTag(R.drawable.heart_icon_2048x1782_hc4h9q6s);
+                }
             }
         });
     }
@@ -145,7 +159,6 @@ public class Food_information extends AppCompatActivity {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     Toast.makeText(Food_information.this, "Đã thêm món ăn vào yêu thích", Toast.LENGTH_SHORT).show();
-                    favorite_button.setImageResource(R.drawable.full_heart_icon);
                 }
                 else {
                     Toast.makeText(Food_information.this, "Đã xảy ra lỗi", Toast.LENGTH_SHORT).show();
@@ -168,6 +181,50 @@ public class Food_information extends AppCompatActivity {
                 Log.d("API_VIEWED", response.code() + " " + response.body().toString());
                 if (!response.isSuccessful()) {
                     Toast.makeText(Food_information.this, "Không thể thêm món ăn vào danh sách đã xem", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void checkFavoriteFood(String userid, String foodid) {
+        RetrofitClient.getUserApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+                favorite_button.setTag(R.drawable.heart_icon_2048x1782_hc4h9q6s);
+                if (response.isSuccessful()){
+                    List<RecipeModel> recipeModel = response.body();
+                    for (RecipeModel model : recipeModel) {
+                        if(model.getId().equals(foodid)) {
+                            favorite_button.setImageResource(R.drawable.full_heart_icon);
+                            favorite_button.setTag(R.drawable.full_heart_icon);
+                            break;
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void deleteFavoriteFood(UserFavoriteRequest userFavoriteRequest) {
+        RetrofitClient.getUserApiService().deleteFavoriteRecipe(userFavoriteRequest.getUser_id(), userFavoriteRequest.getRecipe_id()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(Food_information.this, "Đã xóa món ăn khỏi danh sách yêu thích", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(Food_information.this, "Lỗi", Toast.LENGTH_SHORT).show();
                 }
             }
 
