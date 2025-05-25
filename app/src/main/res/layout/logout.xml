@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/popup">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/popup_ava"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/labour_day_celebration_with_chef_icon_23_2150298713"
+            app:shapeAppearanceOverlay="@style/CircleImageView" />
+        <TextView
+            android:id="@+id/popup_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:layout_gravity="center"
+            android:text="Username"
+            android:textSize="30dp"
+            android:fontFamily="@font/regular_font"
+            android:textColor="#9C93F0" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:paddingBottom="20dp">
+
+        <Button
+            android:id="@+id/button_changepass"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btnlogin"
+            android:text="Đổi mật khẩu"
+            android:textSize="18dp"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/regular_font"/>
+
+        <Button
+            android:id="@+id/button_logout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/btnlogin"
+            android:text="Đăng xuất"
+            android:textSize="18dp"
+            android:layout_margin="10dp"
+            android:fontFamily="@font/regular_font"/>
+    </LinearLayout>
+
+</LinearLayout>

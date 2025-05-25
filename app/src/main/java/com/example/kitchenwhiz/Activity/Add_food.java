@@ -89,7 +89,6 @@ public class Add_food extends AppCompatActivity {
             btnadd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    btnadd.setEnabled(false);
                     String name = txtname.getText().toString().trim();
                     String des = txtdes.getText().toString().trim();
                     String ins = txtins.getText().toString().trim();
@@ -116,13 +115,16 @@ public class Add_food extends AppCompatActivity {
 
                         AddRecipe(imageFile, recipeInfoJson);
 
+                        btnadd.setEnabled(true);
+
                     }
                     catch (Exception ex) {
                         Log.d("ADD_FOOD", ex.getMessage());
                     }
-                    btnadd.setEnabled(true);
                 }
             });
+
+
     }
 
     private void mapping() {
@@ -200,6 +202,7 @@ public class Add_food extends AppCompatActivity {
     }
 
     private void AddRecipe(File imageFile, String recipeInfoJson ) {
+        btnadd.setEnabled(false);
         if (imageFile == null) {
             Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
             return;
@@ -227,8 +230,8 @@ public class Add_food extends AppCompatActivity {
                 } else {
                     if (response.errorBody() != null) {
                         try {
+                            Toast.makeText(Add_food.this, "Món ăn này đã tồn tại", Toast.LENGTH_SHORT).show();
                             Log.d("API_ERROR", response.errorBody().string());
-                            Log.d("TET", recipeInfoJson.toString());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

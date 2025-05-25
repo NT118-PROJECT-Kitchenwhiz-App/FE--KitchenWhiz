@@ -52,7 +52,6 @@ SharedPreferences shared;
                         Toast.makeText(Login.this, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                         return;
                     }
-
                     LoginRequest request = new LoginRequest(username, pass);
                     Login(request);
                 }
@@ -87,6 +86,7 @@ SharedPreferences shared;
         RetrofitClient.getUserApiService().login(request).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
+                Log.d("TT", response.message());
                 User user = response.body();
                 try {
                     if (response.body() != null) {

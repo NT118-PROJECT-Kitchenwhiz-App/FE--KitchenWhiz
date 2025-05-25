@@ -115,7 +115,7 @@
                     android:layout_height="120dp"
                     android:layout_marginTop="52dp"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/labour_day_celebration_with_chef_icon_23_2150298713"
+                    android:src="@drawable/loading_icon"
                     app:layout_constraintEnd_toEndOf="@+id/rcmrandomfood"
                     app:layout_constraintHorizontal_bias="0.934"
                     app:layout_constraintStart_toStartOf="@+id/rcmrandomfood"

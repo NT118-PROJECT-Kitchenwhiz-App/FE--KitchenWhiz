@@ -5,14 +5,16 @@ import java.io.Serializable;
 public class User implements Serializable {
     String _id;
     String username;
-    String token;
+    String accessToken;
     String email;
+    String refreshToken;
 
-    public User(String id, String username, String accesstoken, String email) {
+    public User(String id, String username, String accesstoken, String email, String refreshToken) {
         this._id = id;
         this.email = email;
-        this.token = accesstoken;
+        this.accessToken = accesstoken;
         this.email = email;
+        this.refreshToken = refreshToken;
     }
 
     public String getId() {
@@ -24,10 +26,14 @@ public class User implements Serializable {
     }
 
     public String getAccesstoken() {
-        return token;
+        return accessToken;
     }
 
     public String getUsername() {
         return username;
+    }
+
+    public String getRefreshToken() {
+        return refreshToken;
     }
 }

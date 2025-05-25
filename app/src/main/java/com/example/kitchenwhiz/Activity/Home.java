@@ -1,13 +1,20 @@
 package com.example.kitchenwhiz.Activity;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -16,11 +23,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKeys;
 
 import com.bumptech.glide.Glide;
+import com.example.kitchenwhiz.Model.Logoutrequest;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
@@ -30,6 +39,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import okhttp3.ResponseBody;
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -124,10 +134,18 @@ GifImageView fact_food;
                     int x = location[0] - fact_food.getWidth() - 730;
                     int y = location[1];
 
-                    showPopup(x, y);
+                    showPopupRandomFact(x, y);
                 });
             }
         });
+
+        avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPopuUserInfo(user.getUsername(), user.getRefreshToken());
+            }
+        });
+
     }
 
     private void mapping(){
@@ -177,10 +195,10 @@ GifImageView fact_food;
         if (inRange(totalMinutes, 4*60, 9*60+59)) {
             txtwhattoeat.setText("Kitchenwhiz lo bữa sáng!");
         }
-        else if (inRange(totalMinutes, 10*60, 14*60+59)) {
+        else if (inRange(totalMinutes, 10*60, 15*60+59)) {
             txtwhattoeat.setText("Trưa ăn gì? Kitchenhiz lo");
         }
-        else if (inRange(totalMinutes, 15*60, 19*60 + 59)){
+        else if (inRange(totalMinutes, 16*60, 19*60 + 59)){
             txtwhattoeat.setText("Kitchenwhiz – Tối ngon!");
         }
         else {
@@ -235,7 +253,7 @@ GifImageView fact_food;
         });
     }
 
-    private void showPopup(int x, int y) {
+    private void showPopupRandomFact(int x, int y) {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup, null);
@@ -247,5 +265,89 @@ GifImageView fact_food;
 
 
         TextView popupText = popupView.findViewById(R.id.popup_text);
+    }
+
+    private void showPopuUserInfo(String username, String rftoken) {
+        Log.d("RFTOKEN", rftoken);
+
+        LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.logout, null);
+
+        int width = (int)(Resources.getSystem().getDisplayMetrics().widthPixels * 0.8);
+        PopupWindow popupWindow = new PopupWindow(popupView, width, LinearLayout.LayoutParams.WRAP_CONTENT, true);
+        WindowManager.LayoutParams params = getWindow().getAttributes();
+        params.alpha = 0.3f;
+        getWindow().setAttributes(params);
+        popupWindow.setOutsideTouchable(false);
+        popupWindow.setFocusable(true);
+
+        popupWindow.showAtLocation(getWindow().getDecorView().getRootView(), Gravity.CENTER, 0, 0);
+        popupWindow.setTouchable(true);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        ShapeableImageView avatar = popupView.findViewById(R.id.popup_ava);
+        TextView txt_username_popup = popupView.findViewById(R.id.popup_username);
+        Button changepass = popupView.findViewById(R.id.button_changepass);
+        Button logout = popupView.findViewById(R.id.button_logout);
+
+        txt_username_popup.setText(username);
+        Logoutrequest logoutrequest = new Logoutrequest(rftoken);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(Home.this);
+                dialog.setTitle("Đăng xuất");
+                dialog.setMessage("Bạn có muốn đăng xuất?");
+                dialog.setIcon(R.drawable.logo);
+                dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Logout(logoutrequest);
+                    }
+                });
+
+                dialog.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                dialog.show();
+
+            }
+        });
+        popupWindow.setOnDismissListener(() -> {
+            params.alpha = 1.0f;
+            getWindow().setAttributes(params);
+        });
+
+
+    }
+    
+    private void Logout(Logoutrequest logoutrequest) {
+        RetrofitClient.getUserApiService().logout(logoutrequest).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    SharedPreferences.Editor editor = shared.edit();
+                    editor.clear();
+                    editor.apply();
+                    Toast.makeText(Home.this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Home.this, Login.class);
+                    startActivity(intent);
+                }
+                else {
+                    Toast.makeText(Home.this, "Lỗi", Toast.LENGTH_SHORT).show();
+                    Log.d("LOGOUT", response.message());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
     }
 }

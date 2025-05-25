@@ -78,7 +78,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/font_title"
                     android:padding="20dp"
-                    android:text="BÚN BÒ HUẾ"
+                    android:text=""
                     android:textAllCaps="true"
                     android:textColor="#9084D9"
                     android:textSize="35dp"
@@ -112,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/regular_font"
-                        android:text="04"
+                        android:text="0"
                         android:inputType="number"
                         android:textColor="#9084D9"
                         android:textSize="20dp" />
@@ -133,7 +133,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/regular_font"
                     android:paddingLeft="20dp"
-                    android:text="Thời gian chuẩn bị 90 phút"
+                    android:text="Thời gian chuẩn bị __ phút"
                     android:textColor="#9084D9"
                     android:textSize="20dp"
                     android:paddingBottom="20dp"
@@ -158,7 +158,7 @@
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="20dp"
-                    android:text="Bắp bò: 500 gram\nGân bò: 300 gram\nMóng giò: 1 chiếc ( nên chọn giò trước)\nXương ống (xương lợn hoặc xương bò): 500 gram\nMắm ruốc Huế\nGia vị: gừng, sả, hành khô, tỏi, ớt bột, bột nêm, đường, dầu điều.\nBún: 500 gram\nRau sống: rau diếp, rau ngổ, rau mùi, hoa chuối, hành tươi, giá đỗ,..."
+                    android:text="\n"
                     android:textColor="#9084D9"
                     android:textSize="20dp" />
 
@@ -181,7 +181,7 @@
                     android:paddingTop="10dp"
                     android:paddingRight="20dp"
                     android:paddingBottom="20dp"
-                    android:text="Bước 1:\nĐầu tiên, các bạn cần phải rửa sạch gừng, sả rồi dập sạch. Sau đó lọc giò heo và chặt thành nhiều khúc nhỏ. Phần bắp bò thì có thể dùng chỉ để buộc chắc lại, việc này sẽ làm cho thịt ngon hơn và ít bị co lại hơn.\nBước 2:\nCác bạn nên trần qua phần giò heo, bắp bò, xương, nạm bò và gân bò. Trong khi trần thì các bạn nên vớt bọt ra để nước được trong và nhìn trông đẹp mắt hơn.\nBước 3:\nĐây là bước ướp thịt. Ở bước này, các bạn nên dùng đường, muối, mỳ chính, hành tím, tỏi băm, sả băm (liều lượng phù hợp với khẩu vị người ăn). Tất cả trộn đều lên và để cho ngấm gia vị trong món ăn.\nBước 4:\nSau bước 3, các bạn cho thịt và xương vào nồi áp suất và hầm kỹ. Lưu ý khi hầm thì bạn nên để nước sôi khoảng 5 phút sau đó vặn nhỏ lửa và hầm tiếp khoảng 20 phút thì vớt phần bắp bò và nạm bò ra. Đồng thời khi vớt ra thì ngâm vào thau nước lạnh để thịt được săn và chắc hơn.\nBước 5:\nĐây là bước quan trọng để tạo lên một tô nước dùng chuẩn vị. Các bạn có thể trộn lẫn nước dùng bởi nước hầm thịt bò và nước hầm xương vào chung một xoong sau đó cho thêm nước lạnh vào và đun sôi. Tiếp đó, các bạn nêm thêm gia vị: hành phi thơm, sả băm, tỏi băm,... sao cho vừa với khẩu vị của mình.\nBật mí, nếu muốn nước dùng ngon và chuẩn vị, các bạn nên pha loãng mắm ruốc và lọc lấy nước rồi bỏ vào nồi nước dùng. Cuối cùng, các bạn chỉ cần cho hỗn hợp này vào nồi nước đang ninh xương là được.\nBước 6:\nĐây là bước cuối cùng các bạn sắp xếp thành quả của mình - bước trình bày."
+                    android:text=""
                     android:textColor="#9084D9"
                     android:textSize="20dp" />
 

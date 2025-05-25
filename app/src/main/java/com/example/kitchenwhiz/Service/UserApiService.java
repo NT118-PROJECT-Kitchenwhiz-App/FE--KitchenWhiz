@@ -2,6 +2,7 @@ package com.example.kitchenwhiz.Service;
 
 import com.example.kitchenwhiz.Model.ForgotPassRequest;
 import com.example.kitchenwhiz.Model.LoginRequest;
+import com.example.kitchenwhiz.Model.Logoutrequest;
 import com.example.kitchenwhiz.Model.OTPRequest;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.RegisterRequest;
@@ -28,7 +29,7 @@ public interface UserApiService {
     @POST("user/registration")
     Call<ResponseBody> registerUser(@Body RegisterRequest request);
 
-    @POST("user/vertifyOtp")
+    @POST("user/verifyOtp")
     Call<ResponseBody> verifyOTP(@Body OTPRequest request);
 
     @POST("user/forgotPassword")
@@ -62,5 +63,6 @@ public interface UserApiService {
     Call<ResponseBody> deleteFavoriteRecipe(
             @Path("user_id") String user_id,
             @Path("recipe_id") String recipe_id);
-
+    @POST("user/logout")
+    Call<ResponseBody> logout(@Body Logoutrequest logoutrequest);
 }
