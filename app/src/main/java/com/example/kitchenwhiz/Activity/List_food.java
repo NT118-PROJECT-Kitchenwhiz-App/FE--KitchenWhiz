@@ -117,18 +117,14 @@ TextView setnofound;
                     arr.addAll(response.body());
                     dishAdapter.notifyDataSetChanged();
                     if (arr.isEmpty()) {
-                        listFood.setVisibility(View.GONE);
-                        noResultsLayout.setVisibility(View.VISIBLE);
+                        getRecipebyname(name, dishAdapter, arr);
                     } else {
                         listFood.setVisibility(View.VISIBLE);
                         noResultsLayout.setVisibility(View.GONE);
                     }
                 }
                 else if (response.code() == 404) {
-                    arr.clear();
-                    dishAdapter.updateRecipes(arr);
-                    listFood.setVisibility(View.GONE);
-                    noResultsLayout.setVisibility(View.VISIBLE);
+                    getRecipebyname(name, dishAdapter, arr);
                 }
                 else {
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
@@ -192,7 +188,7 @@ TextView setnofound;
                     if (arr.isEmpty()) {
                         listFood.setVisibility(View.GONE);
                         noResultsLayout.setVisibility(View.VISIBLE);
-                        setnofound.setText("Có vẻ bạn chưa từng\nxem món ăn nào");
+                        setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
                     } else {
                         listFood.setVisibility(View.VISIBLE);
                         noResultsLayout.setVisibility(View.GONE);
@@ -203,10 +199,7 @@ TextView setnofound;
                     dishAdapter.updateRecipes(arr);
                     listFood.setVisibility(View.GONE);
                     noResultsLayout.setVisibility(View.VISIBLE);
-                    setnofound.setText("Có vẻ bạn chưa từng\nxem món ăn nào");
-                }
-                else {
-                    Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
+                    setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
                 }
             }
 
@@ -229,6 +222,42 @@ TextView setnofound;
                         listFood.setVisibility(View.GONE);
                         noResultsLayout.setVisibility(View.VISIBLE);
                         setnofound.setText("Hiện tại chúng tôi chưa biết\nnên gợi ý bạn món nào");
+                    } else {
+                        listFood.setVisibility(View.VISIBLE);
+                        noResultsLayout.setVisibility(View.GONE);
+                    }
+                }
+                else if (response.code() == 404) {
+                    arr.clear();
+                    dishAdapter.updateRecipes(arr);
+                    listFood.setVisibility(View.GONE);
+                    noResultsLayout.setVisibility(View.VISIBLE);
+                    setnofound.setText("Hiện tại chúng tôi chưa biết\nnên gợi ý bạn món nào");
+                }
+                else {
+                    Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getRecipebyname(String name, Dish_Adapter dishAdapter, List<RecipeModel> arr) {
+        RetrofitClient.getRecipeApiService().searchByRecipe(name).enqueue(new Callback<List<RecipeModel>>() {
+            @Override
+            public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
+               Log.d("API_SEARCHBYNAME", name);
+                if (response.isSuccessful()) {
+                    arr.clear();
+                    arr.addAll(response.body());
+                    dishAdapter.notifyDataSetChanged();
+                    if (arr.isEmpty()) {
+                        listFood.setVisibility(View.GONE);
+                        noResultsLayout.setVisibility(View.VISIBLE);
                     } else {
                         listFood.setVisibility(View.VISIBLE);
                         noResultsLayout.setVisibility(View.GONE);

@@ -32,4 +32,7 @@ public interface RecipeApiService {
 
     @GET("recipe/randomRecipe")
     Call<RecipeModel> randomRecipe();
+
+    @GET("recipe/searchByRecipe")
+    Call<List<RecipeModel>> searchByRecipe(@Query("title") String title);
 }
