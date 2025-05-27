@@ -1,5 +1,7 @@
 package com.example.kitchenwhiz.Service;
 
+import androidx.annotation.NonNull;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -23,5 +25,9 @@ public class RetrofitClient {
 
     public static RecipeApiService getRecipeApiService() {
         return getRetrofitInstance().create(RecipeApiService.class);
+    }
+
+    public static FactApiService getFactApiService() {
+        return getRetrofitInstance().create(FactApiService.class);
     }
 }

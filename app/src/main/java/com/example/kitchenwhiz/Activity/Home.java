@@ -30,6 +30,7 @@ import androidx.security.crypto.MasterKeys;
 
 import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Model.Logoutrequest;
+import com.example.kitchenwhiz.Model.RandomFactResponse;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
@@ -265,6 +266,8 @@ GifImageView fact_food;
 
 
         TextView popupText = popupView.findViewById(R.id.popup_text);
+
+        getRandomFact(popupText);
     }
 
     private void showPopuUserInfo(String username, String rftoken) {
@@ -346,6 +349,27 @@ GifImageView fact_food;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void getRandomFact(TextView txt) {
+        RetrofitClient.getFactApiService().getRandomFact().enqueue(new Callback<RandomFactResponse>() {
+            @Override
+            public void onResponse(Call<RandomFactResponse> call, Response<RandomFactResponse> response) {
+                if (response.isSuccessful()) {
+                    RandomFactResponse fact = response.body();
+                    txt.setText(fact.getQuote());
+                }
+                else {
+                    txt.setText("Hôm nay không có fact nào rùi");
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<RandomFactResponse> call, Throwable t) {
 
             }
         });
