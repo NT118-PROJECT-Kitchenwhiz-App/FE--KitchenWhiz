@@ -1,12 +1,18 @@
 package com.example.kitchenwhiz.Activity;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,17 +20,28 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.kitchenwhiz.Adapter.Dish_Adapter;
+import com.example.kitchenwhiz.BuildConfig;
 import com.example.kitchenwhiz.Model.Ingredients;
 import com.example.kitchenwhiz.Model.RecipeModel;
+import com.example.kitchenwhiz.Model.TTSResponse;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.Model.UserFavoriteRequest;
 import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Service.FPTAI_RetrofitClient;
 import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.example.kitchenwhiz.Service.TTSApiService;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.gson.JsonObject;
+import com.google.gson.internal.GsonBuildConfig;
+
+import org.json.JSONObject;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,10 +49,15 @@ import retrofit2.Response;
 
 public class Food_information extends AppCompatActivity {
     ImageView image_food, image_back, favorite_button;
-    TextView titlefood, servings, time, ingredients, step;
+    TextView titlefood, servings, time, ingredients, step, time_play;
     CollapsingToolbarLayout collapsingToolbarLayout;
     Toolbar toolbar;
     AppBarLayout appBarLayout;
+    SeekBar seekBar;
+    ImageButton play, pause;
+    MediaPlayer mediaPlayer;
+    private Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +119,17 @@ public class Food_information extends AppCompatActivity {
                 }
             }
         });
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (step.getText() == null) {
+                    Toast.makeText(Food_information.this, "NULL", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                getAIRead(step.getText().toString().trim());
+            }
+        });
     }
 
     private void mapping(){
@@ -111,6 +144,10 @@ public class Food_information extends AppCompatActivity {
         collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar);
         toolbar = findViewById(R.id.toolbar);
         appBarLayout = findViewById(R.id.app_bar_layout);
+        seekBar = findViewById(R.id.seekBar);
+        play = findViewById(R.id.btnPlay);
+        pause = findViewById(R.id.btnPause);
+        time_play = findViewById(R.id.tvCurrentTime);
     }
 
     private void getInformation(String id){
@@ -118,6 +155,7 @@ public class Food_information extends AppCompatActivity {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
+                    Toast.makeText(Food_information.this, "Chờ chút để tụi mình load audio nhé!", Toast.LENGTH_SHORT).show();
                     RecipeModel recipe = response.body();
                     titlefood.setText(recipe.getTitle());
                     collapsingToolbarLayout.setTitle(recipe.getTitle());
@@ -265,4 +303,108 @@ public class Food_information extends AppCompatActivity {
             }
         });
     }
+
+    private void getAIRead(String text){
+        FPTAI_RetrofitClient.getClient().convertTextToSpeech(text, BuildConfig.MY_API_KEY)
+                .enqueue(new Callback<TTSResponse>() {
+                    @Override
+                    public void onResponse(Call<TTSResponse> call, Response<TTSResponse> response) {
+                        if (response.isSuccessful()) {
+                            try {
+
+                                TTSResponse TTSmodel = response.body();
+
+                                mediaPlayer = new MediaPlayer();
+                                Log.d("API_RESPONSE", TTSmodel.getAsync());
+                                mediaPlayer.setDataSource(TTSmodel.getAsync());
+                                mediaPlayer.prepareAsync();
+
+                                mediaPlayer.setOnPreparedListener(mp -> {
+                                    seekBar.setMax(mp.getDuration());
+                                    time_play.setText(formatTime(mp.getDuration()));
+                                    mp.start();
+                                    play.setEnabled(false);
+                                    pause.setEnabled(true);
+                                    updateSeekBar();
+                                });
+
+                                mediaPlayer.setOnCompletionListener(mp -> {
+                                    play.setEnabled(true);
+                                    pause.setEnabled(false);
+                                    seekBar.setProgress(0);
+                                });
+
+                                pause.setOnClickListener(v -> {
+                                    if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+                                        mediaPlayer.pause();
+                                        play.setEnabled(true);
+                                        pause.setEnabled(false);
+                                    }
+                                });
+
+                                play.setOnClickListener(v -> {
+                                    if (mediaPlayer != null) {
+                                        mediaPlayer.start();
+                                        play.setEnabled(false);
+                                        pause.setEnabled(true);
+                                        updateSeekBar();
+                                    }
+                                });
+
+                                seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                                    @Override
+                                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                                        if (fromUser && mediaPlayer != null) {
+                                            mediaPlayer.seekTo(progress);
+                                        }
+                                    }
+
+                                    @Override public void onStartTrackingTouch(SeekBar seekBar) {}
+                                    @Override public void onStopTrackingTouch(SeekBar seekBar) {}
+                                });
+
+                            } catch (Exception e) {
+                                Log.d("MEDIA_PLAYER_ERROR", e.getMessage());
+                                Toast.makeText(Food_information.this, "Không thể phát âm thanh", Toast.LENGTH_SHORT).show();
+                            }
+                        } else {
+                            Toast.makeText(Food_information.this, "Lỗi khi chuyển văn bản thành giọng nói", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<TTSResponse> call, Throwable t) {
+                        Log.d("TTS_FAILURE", t.getMessage());
+                        Toast.makeText(Food_information.this, "Lỗi kết nối với FPT.AI", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    private void updateSeekBar() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
+            seekBar.setProgress(mediaPlayer.getCurrentPosition());
+            time_play.setText(formatTime(mediaPlayer.getCurrentPosition()));
+            handler.postDelayed(this::updateSeekBar, 1000);
+        }
+    }
+
+    private String formatTime(int millis) {
+        return String.format("%02d:%02d",
+                TimeUnit.MILLISECONDS.toMinutes(millis),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying()) mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+        handler.removeCallbacksAndMessages(null);
+    }
+
 }

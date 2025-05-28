@@ -92,10 +92,12 @@
                     android:textColor="#9084D9"
                     android:textSize="23dp"
                     android:textStyle="bold" />
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -184,6 +186,70 @@
                     android:text=""
                     android:textColor="#9084D9"
                     android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Chúng tôi sẽ đọc cho bạn nghe công thức của món này"
+                    android:fontFamily="@font/regular_font"
+                    android:textSize="20dp"
+                    android:textColor="#9084D9"
+                    android:padding="20dp"/>
+
+                <LinearLayout
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:padding="16dp">
+
+                    <SeekBar
+                        android:id="@+id/seekBar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tvCurrentTime"
+                            android:text="00:00"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:layout_marginTop="16dp">
+
+                        <ImageButton
+                            android:layout_marginRight="20dp"
+                            android:id="@+id/btnPlay"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:src="@drawable/_75"
+                            android:scaleType="fitCenter"
+                            android:tint="@color/purple_700"
+                            android:background="@color/white"
+                            />
+                        <ImageButton
+                            android:layout_marginLeft="20dp"
+                            android:id="@+id/btnPause"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:scaleType="fitCenter"
+                            android:src="@drawable/_371"
+                            android:tint="@color/purple_700"
+                            android:background="@color/white" />
+                    </LinearLayout>
+                </LinearLayout>
+
 
             </LinearLayout>
         </androidx.cardview.widget.CardView>
