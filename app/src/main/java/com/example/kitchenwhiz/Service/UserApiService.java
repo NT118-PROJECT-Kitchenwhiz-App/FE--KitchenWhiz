@@ -65,4 +65,10 @@ public interface UserApiService {
             @Path("recipe_id") String recipe_id);
     @POST("user/logout")
     Call<ResponseBody> logout(@Body Logoutrequest logoutrequest);
+    @Multipart
+    @POST("user/updateAvatar")
+    Call<ResponseBody> updateAvater(
+            @Part("userId") RequestBody userId,
+            @Part MultipartBody.Part image
+    );
 }

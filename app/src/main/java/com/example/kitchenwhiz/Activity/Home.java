@@ -5,9 +5,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -23,6 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.security.crypto.EncryptedSharedPreferences;
@@ -34,12 +39,22 @@ import com.example.kitchenwhiz.Model.RandomFactResponse;
 import com.example.kitchenwhiz.Model.RecipeModel;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
+import com.example.kitchenwhiz.Service.RecipeApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URLConnection;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import pl.droidsonroids.gif.GifImageView;
 import retrofit2.Call;
@@ -49,11 +64,13 @@ import retrofit2.Response;
 public class Home extends AppCompatActivity {
 TextView txtusername, txtwhattoeat, txthome_food, txtdes;
 EditText tbSearch;
-ShapeableImageView avatar, image_food;
+ShapeableImageView avatar, image_food, popup_avatar;
 View viewRandomfood, viewCreatefood;
 ImageView favoriteIcon, recentlyIcon, suggestedIcon;
 SharedPreferences shared;
 GifImageView fact_food;
+ActivityResultLauncher<Intent> pickImage;
+File imageFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -140,10 +157,23 @@ GifImageView fact_food;
             }
         });
 
+        pickImage = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), result -> {
+            if (result.getResultCode() == RESULT_OK && result.getData() != null) {
+                Uri imageUri = result.getData().getData();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    popup_avatar.setImageBitmap(bitmap);
+                    imageFile = saveBitmapToFile(bitmap);
+                } catch (Exception ex) {
+                    Toast.makeText(this, "Error loading image: " + ex.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopuUserInfo(user.getUsername(), user.getRefreshToken());
+                showPopuUserInfo(user.getId() ,user.getUsername(), user.getRefreshToken());
             }
         });
 
@@ -270,7 +300,7 @@ GifImageView fact_food;
         getRandomFact(popupText);
     }
 
-    private void showPopuUserInfo(String username, String rftoken) {
+    private void showPopuUserInfo(String userid, String username, String rftoken) {
         Log.d("RFTOKEN", rftoken);
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -288,9 +318,9 @@ GifImageView fact_food;
         popupWindow.setTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        ShapeableImageView avatar = popupView.findViewById(R.id.popup_ava);
+        popup_avatar = popupView.findViewById(R.id.popup_ava);
         TextView txt_username_popup = popupView.findViewById(R.id.popup_username);
-        Button changepass = popupView.findViewById(R.id.button_changepass);
+        Button changeava = popupView.findViewById(R.id.button_changepass);
         Button logout = popupView.findViewById(R.id.button_logout);
 
         txt_username_popup.setText(username);
@@ -321,6 +351,34 @@ GifImageView fact_food;
 
             }
         });
+
+        popup_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                pickImage.launch(intent);
+            }
+        });
+
+        changeava.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (imageFile == null) {
+                    Toast.makeText(Home.this, "Vui lòng chọn ảnh đại diện trước", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (userid == null || userid.isEmpty()) {
+                    Toast.makeText(Home.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                Log.d("USERID", userid);
+                Toast.makeText(Home.this, "Đang cập nhật avatar...", Toast.LENGTH_SHORT).show();
+                setAvatar(imageFile, userid);
+            }
+        });
+
         popupWindow.setOnDismissListener(() -> {
             params.alpha = 1.0f;
             getWindow().setAttributes(params);
@@ -328,7 +386,22 @@ GifImageView fact_food;
 
 
     }
-    
+
+    private  File saveBitmapToFile(Bitmap bitmap) {
+        File fileDir = getFilesDir();
+        File imageFile = new File(fileDir, "avatar.jpeg");
+        try {
+            FileOutputStream fos = new FileOutputStream(imageFile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.flush();
+            fos.close();
+            return imageFile;
+        } catch (Exception e) {
+            Log.d("IMAGE_AVATAR", e.getMessage());
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return null;
+        }
+    }
     private void Logout(Logoutrequest logoutrequest) {
         RetrofitClient.getUserApiService().logout(logoutrequest).enqueue(new Callback<ResponseBody>() {
             @Override
@@ -370,6 +443,53 @@ GifImageView fact_food;
 
             @Override
             public void onFailure(Call<RandomFactResponse> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void setAvatar(File imageFile, String userid ) {
+        if (imageFile == null) {
+            Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String mimeType = URLConnection.guessContentTypeFromName(imageFile.getName());
+        if (mimeType == null) {
+            mimeType = "image/jpeg";
+        }
+        RequestBody imageRequestBody = RequestBody.create(MediaType.parse(mimeType), imageFile);
+
+        MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), imageRequestBody);
+
+        RequestBody jsonRequestBody = RequestBody.create(
+                MediaType.parse("application/json"), userid
+        );
+        RetrofitClient.getUserApiService().updateAvater(jsonRequestBody, imagePart).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        String body = response.body().string();
+                        JSONObject json = new JSONObject(body);
+                        String url = json.optString("avatar_url");
+                        Toast.makeText(Home.this, "Cập nhập avatar thành công", Toast.LENGTH_SHORT).show();
+                        Glide.with(Home.this)
+                                .load(url)
+                                .placeholder(R.drawable.loading_icon)
+                                .error(R.drawable.error)
+                                .into(avatar);
+                    } catch (Exception e) {
+                        Log.d("RESPONSE", e.getMessage());
+                    }
+                }
+                else {
+                    Log.d("API_AVA", response.message());
+                    Toast.makeText(Home.this, "Lỗi", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
 
             }
         });

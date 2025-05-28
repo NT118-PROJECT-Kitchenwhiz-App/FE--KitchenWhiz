@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/btnlogin"
-            android:text="Đổi mật khẩu"
+            android:text="Đổi avatar"
             android:textSize="18dp"
             android:layout_margin="10dp"
             android:fontFamily="@font/regular_font"/>
