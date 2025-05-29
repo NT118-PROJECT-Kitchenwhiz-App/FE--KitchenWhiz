@@ -41,6 +41,7 @@ import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RecipeApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.example.kitchenwhiz.Util.JWT;
 import com.google.android.material.imageview.ShapeableImageView;
 
 import org.json.JSONObject;
@@ -78,7 +79,6 @@ File imageFile;
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
         mapping();
-        String token = getToken();
 
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
@@ -195,28 +195,6 @@ File imageFile;
         fact_food = findViewById(R.id.random_fact);
     }
 
-    private String getToken(){
-        try {
-            String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-            shared = EncryptedSharedPreferences.create(
-                    "KitchenWhizToken",
-                    masterKey,
-                    this,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (Exception e) {
-            Log.e("SharedPrefs", e.getMessage());
-            shared = getSharedPreferences("KitchenWhizToken", MODE_PRIVATE);
-        }
-        String token = shared.getString("access_token", null);
-        if (token == null){
-            Toast.makeText(this, "Access Token không tìm thấy", Toast.LENGTH_SHORT).show();
-            return null;
-        }
-        return token;
-    }
-
     private void getTime(TextView txtwhattoeat) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"));
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -301,8 +279,6 @@ File imageFile;
     }
 
     private void showPopuUserInfo(String userid, String username, String rftoken) {
-        Log.d("RFTOKEN", rftoken);
-
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.logout, null);
 
@@ -407,9 +383,8 @@ File imageFile;
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    SharedPreferences.Editor editor = shared.edit();
-                    editor.clear();
-                    editor.apply();
+                    JWT jwt = new JWT(Home.this);
+                    jwt.clearToken();
                     Toast.makeText(Home.this, "Đăng xuất thành công!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Home.this, Login.class);
                     startActivity(intent);

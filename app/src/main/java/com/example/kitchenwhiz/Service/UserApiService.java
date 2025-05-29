@@ -1,10 +1,12 @@
 package com.example.kitchenwhiz.Service;
 
+import com.example.kitchenwhiz.Model.AccessTokenResponse;
 import com.example.kitchenwhiz.Model.ForgotPassRequest;
 import com.example.kitchenwhiz.Model.LoginRequest;
 import com.example.kitchenwhiz.Model.Logoutrequest;
 import com.example.kitchenwhiz.Model.OTPRequest;
 import com.example.kitchenwhiz.Model.RecipeModel;
+import com.example.kitchenwhiz.Model.RefreshTokenRequest;
 import com.example.kitchenwhiz.Model.RegisterRequest;
 import com.example.kitchenwhiz.Model.ResetPasswordRequest;
 import com.example.kitchenwhiz.Model.User;
@@ -23,7 +25,6 @@ import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 
 public interface UserApiService {
     @POST("user/registration")
@@ -71,4 +72,7 @@ public interface UserApiService {
             @Part("userId") RequestBody userId,
             @Part MultipartBody.Part image
     );
+
+    @POST("user/refreshAccessToken")
+    Call<AccessTokenResponse> refreshAccessToken(@Body RefreshTokenRequest request);
 }

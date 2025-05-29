@@ -8,13 +8,15 @@ public class User implements Serializable {
     String accessToken;
     String email;
     String refreshToken;
+    String accessTokenExpire;
 
-    public User(String id, String username, String accesstoken, String email, String refreshToken) {
+    public User(String id, String username, String accesstoken, String email, String refreshToken, String accessTokenExpire) {
         this._id = id;
         this.email = email;
         this.accessToken = accesstoken;
         this.email = email;
         this.refreshToken = refreshToken;
+        this.accessTokenExpire = accessTokenExpire;
     }
 
     public String getId() {
@@ -35,5 +37,12 @@ public class User implements Serializable {
 
     public String getRefreshToken() {
         return refreshToken;
+    }
+    public String getAccessTokenExpire(){
+        return accessTokenExpire;
+    }
+
+    public void setAccessToken(String accessToken) {
+        this.accessToken = accessToken;
     }
 }

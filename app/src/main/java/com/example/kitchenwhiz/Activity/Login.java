@@ -22,6 +22,7 @@ import com.example.kitchenwhiz.Model.LoginRequest;
 import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RetrofitClient;
+import com.example.kitchenwhiz.Util.JWT;
 
 import org.json.JSONObject;
 
@@ -88,22 +89,11 @@ SharedPreferences shared;
             public void onResponse(Call<User> call, Response<User> response) {
                 Log.d("TT", response.message());
                 User user = response.body();
-                try {
-                    if (response.body() != null) {
-                        String masterKey = MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC);
-                        shared = EncryptedSharedPreferences.create("KitchenWhizToken", masterKey, Login.this,
-                                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
-                        SharedPreferences.Editor editor = shared.edit();
-                        editor.putString("access_token", user.getAccesstoken());
-                        editor.apply();
-                    }
-                } catch (Exception e) {
-                    Log.d("API LOGIN", e.getMessage());
-                    Toast.makeText(Login.this, "Error", Toast.LENGTH_SHORT).show();
-                }
-
                 if (response.isSuccessful()) {
+                    if (!user.getAccesstoken().isEmpty()) {
+                        JWT jwt = new JWT(Login.this);
+                        jwt.saveToken(user.getAccesstoken(), user.getAccessTokenExpire());
+                    }
                     Intent intent = new Intent(Login.this, Home.class);
                     intent.putExtra("user", user);
                     startActivity(intent);
