@@ -61,7 +61,7 @@ EditText tbfillemail;
     }
 
     private void ForgotPass(ForgotPassRequest request){
-        RetrofitClient.getUserApiService().forgotPassword(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService(this, null).forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()){

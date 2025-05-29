@@ -18,10 +18,7 @@ import retrofit2.http.Query;
 public interface RecipeApiService {
     @Multipart
     @POST("recipe/addRecipe")
-    Call<ResponseBody> addRecipe(
-            @Part MultipartBody.Part image,
-            @Part("recipeInfo") RequestBody recipeInfo
-    );
+    Call<ResponseBody> addRecipe(@Part MultipartBody.Part image);
     @GET("recipe/searchByIngredient")
     Call<List<RecipeModel>> searchByIngredient(@Query("name") String name);
 

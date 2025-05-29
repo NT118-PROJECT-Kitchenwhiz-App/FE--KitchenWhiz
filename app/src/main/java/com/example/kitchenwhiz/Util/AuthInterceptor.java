@@ -17,61 +17,82 @@ import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.Callback;
 
-public class AuthInterceptor implements Interceptor {
-    private JWT jwtUtil;
-    private User user;
-    private Context ct;
+    public class AuthInterceptor implements Interceptor {
+        private JWT jwtUtil;
+        private User user;
+        private Context context;
+        private static final String[] PUBLIC_ENDPOINTS = {
+                "user/login",
+                "user/registration",
+                "user/forgotPassword",
+                "user/resetPassword",
+                "user/verifyOtp"
+        };
 
-    public AuthInterceptor(Context context, User user) {
-        this.ct = context;
-        this.user = user;
-        this.jwtUtil = new JWT(context);
-    }
-
-    @Override
-    public Response intercept(Chain chain) throws IOException {
-        Request originalRequest = chain.request();
-        String accessToken = jwtUtil.getToken();
-
-        if (accessToken == null) {
-            return chain.proceed(originalRequest);
+        public AuthInterceptor(Context context, User user) {
+            this.context = context;
+            this.user = user;
+            this.jwtUtil = new JWT(context);
         }
 
-        if (jwtUtil.isTokenExpired(jwtUtil.getToken())) {
-            synchronized (this) {
-                String newAccessToken = refreshTokenSync();
-                if (newAccessToken == null) {
-                    jwtUtil.clearToken();
-                    return chain.proceed(originalRequest);
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+
+            Log.d("GET TOKEN", jwtUtil.getToken());
+            Request originalRequest = chain.request();
+            String requestUrl = originalRequest.url().encodedPath();
+
+            boolean isPublicEndpoint = false;
+            for (String endpoint : PUBLIC_ENDPOINTS) {
+                if (requestUrl.endsWith(endpoint)) {
+                    isPublicEndpoint = true;
+                    break;
                 }
-                accessToken = newAccessToken;
             }
-        }
 
-        Request modifiedRequest = originalRequest.newBuilder()
-                .header("Authorization", "Bearer " + accessToken)
-                .build();
+            if (isPublicEndpoint || user == null) {
+                return chain.proceed(originalRequest);
+            }
 
-        Response response = chain.proceed(modifiedRequest);
+            String accessToken = jwtUtil.getToken();
+            if (accessToken == null) {
+                return chain.proceed(originalRequest);
+            }
 
-        if (response.code() == 401) {
-            synchronized (this) {
-                String newAccessToken = refreshTokenSync();
-                if (newAccessToken == null) {
-                    jwtUtil.clearToken();
-                    return response;
+            if (jwtUtil.isTokenExpired(jwtUtil.getToken())) {
+                synchronized (this) {
+                    String newAccessToken = refreshTokenSync();
+                    if (newAccessToken == null) {
+                        jwtUtil.clearToken();
+                        return chain.proceed(originalRequest);
+                    }
+                    accessToken = newAccessToken;
                 }
-                accessToken = newAccessToken;
-                Request retryRequest = originalRequest.newBuilder()
-                        .header("Authorization", "Bearer " + accessToken)
-                        .build();
-                return chain.proceed(retryRequest);
             }
+
+            Request modifiedRequest = originalRequest.newBuilder()
+                    .header("Authorization", "Bearer " + accessToken)
+                    .build();
+
+            Response response = chain.proceed(modifiedRequest);
+
+            if (response.code() == 401) {
+                synchronized (this) {
+                    String newAccessToken = refreshTokenSync();
+                    if (newAccessToken == null) {
+                        jwtUtil.clearToken();
+                        return response;
+                    }
+                    accessToken = newAccessToken;
+                    Request retryRequest = originalRequest.newBuilder()
+                            .header("Authorization", "Bearer " + accessToken)
+                            .build();
+                    return chain.proceed(retryRequest);
+                }
+            }
+
+            return response;
         }
-
-        return response;
-    }
-
     private String refreshTokenSync() {
         String refreshToken = user.getRefreshToken();
         if (refreshToken == null) {
@@ -80,7 +101,7 @@ public class AuthInterceptor implements Interceptor {
         }
 
         RefreshTokenRequest request = new RefreshTokenRequest(refreshToken);
-        Call<AccessTokenResponse> call = RetrofitClient.getUserApiService().refreshAccessToken(request);
+        Call<AccessTokenResponse> call = RetrofitClient.getUserApiService(context, user).refreshAccessToken(request);
 
         try {
             retrofit2.Response<AccessTokenResponse> response = call.execute();

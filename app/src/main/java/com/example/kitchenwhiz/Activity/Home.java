@@ -87,7 +87,6 @@ File imageFile;
         getTime(txtwhattoeat);
         RandomFood(user);
 
-
         tbSearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -108,6 +107,7 @@ File imageFile;
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, Add_food.class);
+                intent.putExtra("user", user);
                 startActivity(intent);
             }
         });
@@ -152,7 +152,7 @@ File imageFile;
                     int x = location[0] - fact_food.getWidth() - 730;
                     int y = location[1];
 
-                    showPopupRandomFact(x, y);
+                    showPopupRandomFact(x, y, user);
                 });
             }
         });
@@ -173,7 +173,7 @@ File imageFile;
         avatar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopuUserInfo(user.getId() ,user.getUsername(), user.getRefreshToken());
+                showPopuUserInfo(user);
             }
         });
 
@@ -220,7 +220,7 @@ File imageFile;
     }
 
     private void RandomFood(User user) {
-        RetrofitClient.getRecipeApiService().randomRecipe().enqueue(new Callback<RecipeModel>() {
+        RetrofitClient.getRecipeApiService(this, user).randomRecipe().enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 try {
@@ -262,7 +262,7 @@ File imageFile;
         });
     }
 
-    private void showPopupRandomFact(int x, int y) {
+    private void showPopupRandomFact(int x, int y, User user) {
 
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.popup, null);
@@ -275,10 +275,10 @@ File imageFile;
 
         TextView popupText = popupView.findViewById(R.id.popup_text);
 
-        getRandomFact(popupText);
+        getRandomFact(popupText, user);
     }
 
-    private void showPopuUserInfo(String userid, String username, String rftoken) {
+    private void showPopuUserInfo(User user) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         View popupView = inflater.inflate(R.layout.logout, null);
 
@@ -299,8 +299,8 @@ File imageFile;
         Button changeava = popupView.findViewById(R.id.button_changepass);
         Button logout = popupView.findViewById(R.id.button_logout);
 
-        txt_username_popup.setText(username);
-        Logoutrequest logoutrequest = new Logoutrequest(rftoken);
+        txt_username_popup.setText(user.getUsername());
+        Logoutrequest logoutrequest = new Logoutrequest(user.getRefreshToken());
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -312,7 +312,7 @@ File imageFile;
                 dialog.setPositiveButton("Có", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Logout(logoutrequest);
+                        Logout(logoutrequest, user);
                     }
                 });
 
@@ -344,14 +344,8 @@ File imageFile;
                     return;
                 }
 
-                if (userid == null || userid.isEmpty()) {
-                    Toast.makeText(Home.this, "Không tìm thấy thông tin người dùng", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                Log.d("USERID", userid);
                 Toast.makeText(Home.this, "Đang cập nhật avatar...", Toast.LENGTH_SHORT).show();
-                setAvatar(imageFile, userid);
+                setAvatar(imageFile, user);
             }
         });
 
@@ -378,8 +372,8 @@ File imageFile;
             return null;
         }
     }
-    private void Logout(Logoutrequest logoutrequest) {
-        RetrofitClient.getUserApiService().logout(logoutrequest).enqueue(new Callback<ResponseBody>() {
+    private void Logout(Logoutrequest logoutrequest, User user) {
+        RetrofitClient.getUserApiService(this, user).logout(logoutrequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -402,8 +396,8 @@ File imageFile;
         });
     }
 
-    private void getRandomFact(TextView txt) {
-        RetrofitClient.getFactApiService().getRandomFact().enqueue(new Callback<RandomFactResponse>() {
+    private void getRandomFact(TextView txt, User user) {
+        RetrofitClient.getFactApiService(this, user).getRandomFact().enqueue(new Callback<RandomFactResponse>() {
             @Override
             public void onResponse(Call<RandomFactResponse> call, Response<RandomFactResponse> response) {
                 if (response.isSuccessful()) {
@@ -423,7 +417,7 @@ File imageFile;
         });
     }
 
-    private void setAvatar(File imageFile, String userid ) {
+    private void setAvatar(File imageFile, User user) {
         if (imageFile == null) {
             Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
             return;
@@ -436,10 +430,7 @@ File imageFile;
 
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), imageRequestBody);
 
-        RequestBody jsonRequestBody = RequestBody.create(
-                MediaType.parse("application/json"), userid
-        );
-        RetrofitClient.getUserApiService().updateAvater(jsonRequestBody, imagePart).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService(this, user).updateAvater(imagePart).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {

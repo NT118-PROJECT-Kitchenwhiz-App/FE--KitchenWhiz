@@ -68,27 +68,11 @@ public class Verify_OTP extends AppCompatActivity {
     }
 
     private void OTP(OTPRequest request){
-        RetrofitClient.getUserApiService().verifyOTP(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService(this, null).verifyOTP(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 String message = "";
                 int Statuscode = response.code();
-                /*try{
-                    if (response.body() != null) {
-                        String responsebody = response.body().string();
-                        JSONObject jsonObject = new JSONObject(responsebody);
-                        message = jsonObject.optString("message", "No message");
-                    } else if (response.errorBody() != null) {
-                        String responsebody = response.errorBody().string();
-                        //JSONObject jsonObject = new JSONObject(responsebody);
-                        //message = jsonObject.optString("message", "No message");
-
-                    }
-                }
-                catch (Exception e){
-                    Log.e("API OTP", e.getMessage());
-                    message = "Error";
-                }*/
                 if (response.isSuccessful()){
                     if (status == 1){
                     Toast.makeText(Verify_OTP.this, "Đăng ký thành công", Toast.LENGTH_SHORT).show();

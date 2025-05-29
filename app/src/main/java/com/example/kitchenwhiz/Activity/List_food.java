@@ -51,6 +51,7 @@ TextView setnofound;
         Dish_Adapter dishAdapter = new Dish_Adapter(this, R.layout.dish_item, arrDish, list);
         listFood.setAdapter(dishAdapter);
 
+        List<RecipeModel> listsearch = new ArrayList<>();
         if (list.equals("search")) {
 
             String home_query = intent.getStringExtra("search_query");
@@ -58,17 +59,17 @@ TextView setnofound;
                 txt_Search.setText(home_query);
             }
 
-            searchRecipe(home_query, arrDish, dishAdapter);
+            getRecipebyname(home_query, dishAdapter, arrDish, user);
         }
         else if (list.equals("favorite")) {
-            getallFavoriteFoods(user.getId(), arrDish, dishAdapter);
+            getallFavoriteFoods(user, arrDish, dishAdapter);
 
         }
         else if (list.equals("viewed")){
-            getViewedFood(user.getId(), dishAdapter, arrDish);
+            getViewedFood(user, dishAdapter, arrDish);
         }
         else if (list.equals("top")) {
-            getTopFoods(dishAdapter, arrDish);
+            getTopFoods(dishAdapter, arrDish, user);
         }
 
         txt_Search.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -78,7 +79,8 @@ TextView setnofound;
                         (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN)) {
 
                     String query = txt_Search.getText().toString().trim().toLowerCase();
-                    searchRecipe(query, arrDish, dishAdapter);
+
+                    getRecipebyname(query, dishAdapter, arrDish, user);
 
                     InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(txt_Search.getWindowToken(), 0);
@@ -108,23 +110,26 @@ TextView setnofound;
         setnofound = findViewById(R.id.explains);
     }
 
-    private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter){
-        RetrofitClient.getRecipeApiService().searchByIngredient(name).enqueue(new Callback<List<RecipeModel>>() {
+    private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter, User user){
+        RetrofitClient.getRecipeApiService(this, user).searchByIngredient(name).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){
-                    arr.clear();
-                    arr.addAll(response.body());
+                    for (RecipeModel recipe : response.body()) {
+                        if (!containsRecipe(arr, recipe)) {
+                            arr.add(recipe);
+                        }
+                    }
                     dishAdapter.notifyDataSetChanged();
                     if (arr.isEmpty()) {
-                        getRecipebyname(name, dishAdapter, arr);
-                    } else {
+                        listFood.setVisibility(View.GONE);
+                        noResultsLayout.setVisibility(View.VISIBLE);
+                        setnofound.setText("Có vẻ bạn chưa\nyêu thích món ăn nào");
+                    }
+                    else {
                         listFood.setVisibility(View.VISIBLE);
                         noResultsLayout.setVisibility(View.GONE);
                     }
-                }
-                else if (response.code() == 404) {
-                    getRecipebyname(name, dishAdapter, arr);
                 }
                 else {
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
@@ -139,12 +144,11 @@ TextView setnofound;
     });
     }
 
-    private void getallFavoriteFoods(String userid, List<RecipeModel> arr, Dish_Adapter dishAdapter) {
-        RetrofitClient.getUserApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+    private void getallFavoriteFoods(User user, List<RecipeModel> arr, Dish_Adapter dishAdapter) {
+        RetrofitClient.getUserApiService(this, user).allFavoriteRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 Log.d("CHECK_DATA", response.message());
-                Log.d("CHECK", userid);
                 if (response.isSuccessful()){
                     arr.clear();
                     arr.addAll(response.body());
@@ -177,8 +181,8 @@ TextView setnofound;
         });
     }
 
-    private void getViewedFood(String userid, Dish_Adapter dishAdapter, List<RecipeModel> arr) {
-        RetrofitClient.getUserApiService().allViewRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+    private void getViewedFood(User user, Dish_Adapter dishAdapter, List<RecipeModel> arr) {
+        RetrofitClient.getUserApiService(this, user).allViewRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){
@@ -210,8 +214,8 @@ TextView setnofound;
         });
     }
 
-    public void getTopFoods(Dish_Adapter dishAdapter, List<RecipeModel> arr) {
-        RetrofitClient.getRecipeApiService().likeRecipes().enqueue(new Callback<List<RecipeModel>>() {
+    public void getTopFoods(Dish_Adapter dishAdapter, List<RecipeModel> arr, User user) {
+        RetrofitClient.getRecipeApiService(this, user).likeRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 if (response.isSuccessful()){
@@ -246,8 +250,8 @@ TextView setnofound;
         });
     }
 
-    private void getRecipebyname(String name, Dish_Adapter dishAdapter, List<RecipeModel> arr) {
-        RetrofitClient.getRecipeApiService().searchByRecipe(name).enqueue(new Callback<List<RecipeModel>>() {
+    private void getRecipebyname(String name, Dish_Adapter dishAdapter, List<RecipeModel> arr, User user) {
+        RetrofitClient.getRecipeApiService(this, user).searchByRecipe(name).enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                Log.d("API_SEARCHBYNAME", name);
@@ -255,20 +259,9 @@ TextView setnofound;
                     arr.clear();
                     arr.addAll(response.body());
                     dishAdapter.notifyDataSetChanged();
-                    if (arr.isEmpty()) {
-                        listFood.setVisibility(View.GONE);
-                        noResultsLayout.setVisibility(View.VISIBLE);
-                    } else {
-                        listFood.setVisibility(View.VISIBLE);
-                        noResultsLayout.setVisibility(View.GONE);
-                    }
-                }
-                else if (response.code() == 404) {
-                    arr.clear();
-                    dishAdapter.updateRecipes(arr);
-                    listFood.setVisibility(View.GONE);
-                    noResultsLayout.setVisibility(View.VISIBLE);
-                    setnofound.setText("Hiện tại chúng tôi chưa biết\nnên gợi ý bạn món nào");
+
+                    searchRecipe(name, arr, dishAdapter, user);
+
                 }
                 else {
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
@@ -280,6 +273,15 @@ TextView setnofound;
 
             }
         });
+    }
+
+    private boolean containsRecipe(List<RecipeModel> list, RecipeModel item) {
+        for (RecipeModel model : list) {
+            if (model.getId().equals(item.getId())) {
+                return true;
+            }
+        }
+        return false;
     }
 
 

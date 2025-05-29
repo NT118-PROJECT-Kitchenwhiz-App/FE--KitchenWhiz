@@ -71,11 +71,11 @@ public class Food_information extends AppCompatActivity {
         String id = intent.getStringExtra("Foodid");
         User user = (User) getIntent().getSerializableExtra("user");
 
-        getInformation(id);
-        checkFavoriteFood(user.getId(), id);
+        getInformation(user, id);
+        checkFavoriteFood(user, id);
 
-        UserFavoriteRequest userViewedRequest = new UserFavoriteRequest(user.getId(), id);
-        addViewedFavoriteFood(userViewedRequest);
+        UserFavoriteRequest userViewedRequest = new UserFavoriteRequest(id);
+        addViewedFavoriteFood(userViewedRequest, user);
         setSupportActionBar(toolbar);
 
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -103,17 +103,17 @@ public class Food_information extends AppCompatActivity {
         favorite_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UserFavoriteRequest userFavoriteRequest = new UserFavoriteRequest(user.getId(), id);
+                UserFavoriteRequest userFavoriteRequest = new UserFavoriteRequest(id);
                 int currentImageId = (favorite_button.getTag() != null)
                         ? (int) favorite_button.getTag()
                         : R.drawable.heart_icon_2048x1782_hc4h9q6s;
 
                 if (currentImageId == R.drawable.heart_icon_2048x1782_hc4h9q6s) {
-                    addUserFavoriteFood(userFavoriteRequest);
+                    addUserFavoriteFood(userFavoriteRequest, user);
                     favorite_button.setImageResource(R.drawable.full_heart_icon);
                     favorite_button.setTag(R.drawable.full_heart_icon);
                 } else {
-                    deleteFavoriteFood(userFavoriteRequest);
+                    deleteFavoriteFood(userFavoriteRequest, user);
                     favorite_button.setImageResource(R.drawable.heart_icon_2048x1782_hc4h9q6s);
                     favorite_button.setTag(R.drawable.heart_icon_2048x1782_hc4h9q6s);
                 }
@@ -150,8 +150,8 @@ public class Food_information extends AppCompatActivity {
         time_play = findViewById(R.id.tvCurrentTime);
     }
 
-    private void getInformation(String id){
-        RetrofitClient.getRecipeApiService().getRecipeById(id).enqueue(new Callback<RecipeModel>() {
+    private void getInformation(User user, String id){
+        RetrofitClient.getRecipeApiService(this, user).getRecipeById(id).enqueue(new Callback<RecipeModel>() {
             @Override
             public void onResponse(Call<RecipeModel> call, Response<RecipeModel> response) {
                 if (response.isSuccessful()) {
@@ -222,8 +222,8 @@ public class Food_information extends AppCompatActivity {
         });
     }
     
-    private void addUserFavoriteFood(UserFavoriteRequest userFavoriteRequest) {
-        RetrofitClient.getUserApiService().addFavoriteRecipes(userFavoriteRequest).enqueue(new Callback<ResponseBody>() {
+    private void addUserFavoriteFood(UserFavoriteRequest userFavoriteRequest, User user) {
+        RetrofitClient.getUserApiService(this, user).addFavoriteRecipes(userFavoriteRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
@@ -243,8 +243,8 @@ public class Food_information extends AppCompatActivity {
         });
     }
     
-    private void addViewedFavoriteFood(UserFavoriteRequest userViewedRequest){
-        RetrofitClient.getUserApiService().addViewedRecipes(userViewedRequest).enqueue(new Callback<ResponseBody>() {
+    private void addViewedFavoriteFood(UserFavoriteRequest userViewedRequest, User user){
+        RetrofitClient.getUserApiService(this, user).addViewedRecipes(userViewedRequest).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 Log.d("API_VIEWED", response.code() + " " + response.body().toString());
@@ -260,8 +260,8 @@ public class Food_information extends AppCompatActivity {
         });
     }
 
-    private void checkFavoriteFood(String userid, String foodid) {
-        RetrofitClient.getUserApiService().allFavoriteRecipes(userid).enqueue(new Callback<List<RecipeModel>>() {
+    private void checkFavoriteFood(User user, String foodid) {
+        RetrofitClient.getUserApiService(this, user).allFavoriteRecipes().enqueue(new Callback<List<RecipeModel>>() {
             @Override
             public void onResponse(Call<List<RecipeModel>> call, Response<List<RecipeModel>> response) {
                 favorite_button.setTag(R.drawable.heart_icon_2048x1782_hc4h9q6s);
@@ -285,8 +285,8 @@ public class Food_information extends AppCompatActivity {
         });
     }
 
-    private void deleteFavoriteFood(UserFavoriteRequest userFavoriteRequest) {
-        RetrofitClient.getUserApiService().deleteFavoriteRecipe(userFavoriteRequest.getUser_id(), userFavoriteRequest.getRecipe_id()).enqueue(new Callback<ResponseBody>() {
+    private void deleteFavoriteFood(UserFavoriteRequest userFavoriteRequest, User user) {
+        RetrofitClient.getUserApiService(this, user).deleteFavoriteRecipe(userFavoriteRequest.getRecipe_id()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {

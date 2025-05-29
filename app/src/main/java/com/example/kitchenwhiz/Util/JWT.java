@@ -14,6 +14,7 @@ import com.example.kitchenwhiz.Activity.Home;
 import com.example.kitchenwhiz.Activity.Login;
 
 import java.sql.Time;
+import java.util.concurrent.TimeUnit;
 
 public class JWT {
     private String accessToken;
@@ -33,6 +34,7 @@ public class JWT {
             );
         } catch (Exception e) {
             sharedPreferences = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+            Log.w("JWT", e.getMessage());
         }
     }
 
@@ -55,6 +57,7 @@ public class JWT {
     public void clearToken() {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.remove(KEY_ACCESS_TOKEN);
+        editor.remove(KEY_TOKEN_EXPIRY);
         editor.apply();
     }
 
@@ -67,8 +70,8 @@ public class JWT {
 
             switch(unit){
                 case "s": return value;
-                case "m": return value*60;
-                case "h": return value*3600;
+                case "m": return TimeUnit.MINUTES.toSeconds(value);
+                case "h": return TimeUnit.HOURS.toSeconds(value);
                 default: return 0;
             }
         } catch (Exception e) {
@@ -81,9 +84,9 @@ public class JWT {
         long currentTimeSeconds = System.currentTimeMillis() / 1000;
         return currentTimeSeconds + expireSeconds;
     }
-    public boolean isTokenExpired(String token){
-        String acesstoken = getToken();
-        if (token == null) return true;
+    public boolean isTokenExpired(String accesstoken){
+        accesstoken = getToken();
+        if (accesstoken == null) return true;
         long expiryTimestamp = sharedPreferences.getLong(KEY_TOKEN_EXPIRY, 0);
         long currentTimeSeconds = System.currentTimeMillis() / 1000;
 

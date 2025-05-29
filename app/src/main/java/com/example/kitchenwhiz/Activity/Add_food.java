@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.kitchenwhiz.Model.Ingredients;
 import com.example.kitchenwhiz.Model.RecipeInfo;
+import com.example.kitchenwhiz.Model.User;
 import com.example.kitchenwhiz.R;
 import com.example.kitchenwhiz.Service.RecipeApiService;
 import com.example.kitchenwhiz.Service.RetrofitClient;
@@ -58,9 +59,11 @@ public class Add_food extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_food);
-            mapping();
-            addRow();
-            addRow();
+        mapping();
+        addRow();
+        addRow();
+        Intent intent = getIntent();
+        User user = (User) getIntent().getSerializableExtra("user");
             btnaddin.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -82,8 +85,8 @@ public class Add_food extends AppCompatActivity {
             });
 
             image.setOnClickListener(v -> {
-                    Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    pickImage.launch(intent);
+                    Intent inte = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    pickImage.launch(inte);
             });
 
             btnadd.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +116,7 @@ public class Add_food extends AppCompatActivity {
                             return;
                         }
 
-                        AddRecipe(imageFile, recipeInfoJson);
+                        AddRecipe(user, imageFile);
 
                         btnadd.setEnabled(true);
 
@@ -201,7 +204,7 @@ public class Add_food extends AppCompatActivity {
         }
     }
 
-    private void AddRecipe(File imageFile, String recipeInfoJson ) {
+    private void AddRecipe(User user, File imageFile) {
         btnadd.setEnabled(false);
         if (imageFile == null) {
             Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
@@ -214,12 +217,8 @@ public class Add_food extends AppCompatActivity {
         RequestBody imageRequestBody = RequestBody.create(MediaType.parse(mimeType), imageFile);
 
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), imageRequestBody);
-
-        RequestBody jsonRequestBody = RequestBody.create(
-                MediaType.parse("application/json"), recipeInfoJson
-        );
-        RecipeApiService apiService = RetrofitClient.getRecipeApiService();
-        Call<ResponseBody> call = apiService.addRecipe(imagePart, jsonRequestBody);
+        RecipeApiService apiService = RetrofitClient.getRecipeApiService(this, user);
+        Call<ResponseBody> call = apiService.addRecipe(imagePart);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override

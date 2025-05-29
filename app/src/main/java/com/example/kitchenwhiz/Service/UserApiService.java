@@ -45,33 +45,25 @@ public interface UserApiService {
     @POST("user/addFavoriteRecipes")
     Call<ResponseBody> addFavoriteRecipes(@Body UserFavoriteRequest userFavoriteRequest);
 
-    @GET("user/allFavoriteRecipes/{user_id}")
-    Call<List<RecipeModel>> allFavoriteRecipes(@Path("user_id") String user_id);
+    @GET("user/allFavoriteRecipes")
+    Call<List<RecipeModel>> allFavoriteRecipes();
 
-    @DELETE("user/{user_id}/favoriteRecipe/{recipe_id}")
-    Call<ResponseBody> DeletefavoriteRecipe(
-            @Path("user_id") String user_id,
-            @Path("recipe_id") String recipe_id
-    );
+    @DELETE("user/favoriteRecipe/{recipe_id}")
+    Call<ResponseBody> DeletefavoriteRecipe(@Path("recipe_id") String recipe_id);
 
     @POST("user/addViewedRecipes")
     Call<ResponseBody> addViewedRecipes(@Body UserFavoriteRequest userviewedRequest);
 
-    @GET("user/allViewRecipes/{user_id}")
-    Call<List<RecipeModel>> allViewRecipes(@Path("user_id") String user_id);
+    @GET("user/allViewRecipes")
+    Call<List<RecipeModel>> allViewRecipes();
 
-    @DELETE("user/{user_id}/favoriteRecipe/{recipe_id}")
-    Call<ResponseBody> deleteFavoriteRecipe(
-            @Path("user_id") String user_id,
-            @Path("recipe_id") String recipe_id);
+    @DELETE("user/favoriteRecipe/{recipe_id}")
+    Call<ResponseBody> deleteFavoriteRecipe(@Path("recipe_id") String recipe_id);
     @POST("user/logout")
     Call<ResponseBody> logout(@Body Logoutrequest logoutrequest);
     @Multipart
     @POST("user/updateAvatar")
-    Call<ResponseBody> updateAvater(
-            @Part("userId") RequestBody userId,
-            @Part MultipartBody.Part image
-    );
+    Call<ResponseBody> updateAvater(@Part MultipartBody.Part image);
 
     @POST("user/refreshAccessToken")
     Call<AccessTokenResponse> refreshAccessToken(@Body RefreshTokenRequest request);

@@ -98,25 +98,10 @@ TextView txtlogin;
     }
 
     private void RegisterUser(RegisterRequest request){
-        RetrofitClient.getUserApiService().registerUser(request).enqueue(new Callback<ResponseBody>() {
+        RetrofitClient.getUserApiService(this, null).registerUser(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                int statusCode = response.code();/*
-                try{
-                    if (response.body() != null) {
-                    String responsebody = response.body().string();
-                    JSONObject jsonObject = new JSONObject(responsebody);
-                    message = jsonObject.optString("success", jsonObject.optString("message", "No message"));
-                } else if (response.errorBody() != null) {
-                        String errorBody = response.errorBody().string();
-                        JSONObject jsonObject = new JSONObject(errorBody);
-                        message = jsonObject.optString("message", "Error occurred");
-                    }
-                }
-                catch (Exception e){
-                    Log.e("API Register", e.getMessage());
-                    message = "Error";
-                }*/
+                int statusCode = response.code();
                 if (response.isSuccessful()) {
                     Toast.makeText(Signup.this, "Đăng ký thành công. Vui lòng kiểm tra mail (bao gồm mail rác) để xác nhận OTP", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Signup.this, Verify_OTP.class);
