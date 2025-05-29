@@ -83,11 +83,11 @@ File imageFile;
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
         txtusername.setText(user.getUsername());
-        if (!user.getAvatar_url().isEmpty()) {
+        if (!user.getAvatar_url().isEmpty() && user.getAvatar_url() != null) {
             Glide.with(this)
                     .load(user.getAvatar_url())
                     .error(R.drawable.error)
-                    .load(R.drawable.loading_icon)
+                    .placeholder(R.drawable.loading_icon)
                     .into(avatar);
         }
         getTime(txtwhattoeat);
