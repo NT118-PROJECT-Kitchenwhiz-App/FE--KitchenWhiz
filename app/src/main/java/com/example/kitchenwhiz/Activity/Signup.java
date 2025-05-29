@@ -47,7 +47,7 @@ TextView txtlogin;
                 }
 
                 if (!validateusername(username)){
-                    Toast.makeText(Signup.this, "Tên tài khoản phải có độ dài từ 6-20 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
+                    Toast.makeText(Signup.this, "Tên tài khoản phải có độ dài từ 6-25 từ và không chứa các kí tự đặc biệt", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -63,6 +63,7 @@ TextView txtlogin;
 
                 RegisterRequest request = new RegisterRequest(email, username, password);
                 RegisterUser(request);
+                btnsignup.setEnabled(true);
             }
         });
         txtlogin.setOnClickListener(new View.OnClickListener() {
@@ -89,7 +90,7 @@ TextView txtlogin;
     }
 
     private boolean validateusername(String username){
-        String regex = "^[A-Za-z0-9+_.-]{3,20}$";
+        String regex = "^[A-Za-z0-9+_.-]{6,25}$";
         return username.matches(regex);
     }
 
@@ -98,6 +99,7 @@ TextView txtlogin;
     }
 
     private void RegisterUser(RegisterRequest request){
+        btnsignup.setEnabled(false);
         RetrofitClient.getUserApiService(this, null).registerUser(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

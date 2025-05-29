@@ -60,6 +60,7 @@ EditText tbpass, tbcfpass;
                 }
                 ResetPasswordRequest request = new ResetPasswordRequest(email, newPassword);
                 ResetPass(request);
+                btnverify.setEnabled(true);
             }
         });
     }
@@ -74,6 +75,7 @@ EditText tbpass, tbcfpass;
         return (password.length()>=6);
     }
     private void ResetPass(ResetPasswordRequest request){
+        btnverify.setEnabled(false);
         RetrofitClient.getUserApiService(this, null).resetPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

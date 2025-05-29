@@ -50,6 +50,7 @@ EditText tbfillemail;
                     }
                     ForgotPassRequest request = new ForgotPassRequest(email);
                     ForgotPass(request);
+                    btnverify.setEnabled(true);
                 }
             });
     }
@@ -61,6 +62,7 @@ EditText tbfillemail;
     }
 
     private void ForgotPass(ForgotPassRequest request){
+        btnverify.setEnabled(false);
         RetrofitClient.getUserApiService(this, null).forgotPassword(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -83,7 +83,13 @@ File imageFile;
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
         txtusername.setText(user.getUsername());
-
+        if (!user.getAvatar_url().isEmpty()) {
+            Glide.with(this)
+                    .load(user.getAvatar_url())
+                    .error(R.drawable.error)
+                    .load(R.drawable.loading_icon)
+                    .into(avatar);
+        }
         getTime(txtwhattoeat);
         RandomFood(user);
 
@@ -345,7 +351,7 @@ File imageFile;
                 }
 
                 Toast.makeText(Home.this, "Đang cập nhật avatar...", Toast.LENGTH_SHORT).show();
-                setAvatar(imageFile, user);
+                setAvatar(imageFile, user, popup_avatar);
             }
         });
 
@@ -417,7 +423,7 @@ File imageFile;
         });
     }
 
-    private void setAvatar(File imageFile, User user) {
+    private void setAvatar(File imageFile, User user, ShapeableImageView popup_avatar) {
         if (imageFile == null) {
             Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
             return;
@@ -444,6 +450,11 @@ File imageFile;
                                 .placeholder(R.drawable.loading_icon)
                                 .error(R.drawable.error)
                                 .into(avatar);
+                        Glide.with(Home.this)
+                                .load(url)
+                                .placeholder(R.drawable.loading_icon)
+                                .error(R.drawable.error)
+                                .into(popup_avatar);
                     } catch (Exception e) {
                         Log.d("RESPONSE", e.getMessage());
                     }

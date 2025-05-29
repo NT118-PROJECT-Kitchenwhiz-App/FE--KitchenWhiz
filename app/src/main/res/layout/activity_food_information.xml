@@ -21,7 +21,7 @@
             android:layout_height="match_parent"
             app:layout_scrollFlags="scroll|exitUntilCollapsed"
             app:contentScrim="#8F7FED"
-            app:title="BÚN BÒ HUẾ"
+            app:title=""
             android:background="#8F7FED"
             app:titleEnabled="true"
             app:expandedTitleTextAppearance="@style/ExpandedAppBar"
@@ -190,7 +190,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Chúng tôi sẽ đọc cho bạn nghe công thức của món này"
+                    android:text="AUDIO"
+                    android:textStyle="bold"
                     android:fontFamily="@font/regular_font"
                     android:textSize="20dp"
                     android:textColor="#9084D9"

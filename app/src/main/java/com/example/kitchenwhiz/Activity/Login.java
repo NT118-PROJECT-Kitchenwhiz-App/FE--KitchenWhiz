@@ -55,6 +55,7 @@ SharedPreferences shared;
                     }
                     LoginRequest request = new LoginRequest(username, pass);
                     Login(request);
+                    btnlogin.setEnabled(true);
                 }
             });
 
@@ -84,6 +85,7 @@ SharedPreferences shared;
     }
 
     private void Login(LoginRequest request) {
+        btnlogin.setEnabled(false);
         RetrofitClient.getUserApiService(this, null).login(request).enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {

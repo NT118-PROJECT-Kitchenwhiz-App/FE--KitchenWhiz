@@ -20,7 +20,7 @@ public interface RecipeApiService {
     @POST("recipe/addRecipe")
     Call<ResponseBody> addRecipe(
             @Part MultipartBody.Part image,
-            @Part RequestBody recipeInfo
+            @Part("recipeInfo") RequestBody recipeInfo
     );
     @GET("recipe/searchByIngredient")
     Call<List<RecipeModel>> searchByIngredient(@Query("name") String name);

@@ -56,6 +56,7 @@ public class Verify_OTP extends AppCompatActivity {
                 }
                 OTPRequest request = new OTPRequest(email, otpCode);
                 OTP(request);
+                btnverify.setEnabled(true);
             }
         });
     }
@@ -68,6 +69,7 @@ public class Verify_OTP extends AppCompatActivity {
     }
 
     private void OTP(OTPRequest request){
+        btnverify.setEnabled(false);
         RetrofitClient.getUserApiService(this, null).verifyOTP(request).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
