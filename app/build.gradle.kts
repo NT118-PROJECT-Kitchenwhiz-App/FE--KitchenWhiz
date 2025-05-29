@@ -26,6 +26,7 @@ android {
     }
     buildTypes {
         release {
+            buildConfigField("String", "MY_API_KEY", localProperties.getProperty("MY_API_KEY"))
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -50,7 +51,6 @@ android {
 }
 
 dependencies {
-    implementation ("com.google.code.gson:gson:2.9.0")
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.29")
     implementation ("androidx.security:security-crypto:1.0.0")
     implementation ("com.google.android.material:material:1.9.0")

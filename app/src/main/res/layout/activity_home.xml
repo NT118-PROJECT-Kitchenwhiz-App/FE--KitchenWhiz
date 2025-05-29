@@ -211,7 +211,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/txtsuggest"
+                        android:id="@+id/txtfavorite"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -289,7 +289,7 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <TextView
-                        android:id="@+id/txtsuggest"
+                        android:id="@+id/txttop"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
