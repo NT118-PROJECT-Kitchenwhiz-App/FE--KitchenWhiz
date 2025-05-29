@@ -216,7 +216,7 @@ public class Food_information extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-                Log.d("FAIL_API_GET_FOOD", t.getMessage());
+                Toast.makeText(Food_information.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -238,7 +238,7 @@ public class Food_information extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Food_information.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -255,7 +255,7 @@ public class Food_information extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Food_information.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -280,7 +280,7 @@ public class Food_information extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(Food_information.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -299,7 +299,7 @@ public class Food_information extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Food_information.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -374,7 +374,6 @@ public class Food_information extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<TTSResponse> call, Throwable t) {
-                        Log.d("TTS_FAILURE", t.getMessage());
                         Toast.makeText(Food_information.this, "Lỗi kết nối với FPT.AI", Toast.LENGTH_SHORT).show();
                     }
                 });

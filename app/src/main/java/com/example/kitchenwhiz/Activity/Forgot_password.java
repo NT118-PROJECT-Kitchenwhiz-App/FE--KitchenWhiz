@@ -78,8 +78,7 @@ EditText tbfillemail;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("API FORGOTPASS", "Failed: " + t.getMessage());
-                Toast.makeText(Forgot_password.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Forgot_password.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

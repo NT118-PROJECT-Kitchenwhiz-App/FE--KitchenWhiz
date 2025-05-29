@@ -116,8 +116,7 @@ TextView txtlogin;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("API Register", "Failed: " + t.getMessage());
-                Toast.makeText(Signup.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Signup.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

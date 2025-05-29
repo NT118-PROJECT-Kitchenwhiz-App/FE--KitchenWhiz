@@ -59,9 +59,9 @@ public class Add_food extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_add_food);
-        mapping();
-        addRow();
-        addRow();
+            mapping();
+            addRow();
+            addRow();
         Intent intent = getIntent();
         User user = (User) getIntent().getSerializableExtra("user");
             btnaddin.setOnClickListener(new View.OnClickListener() {
@@ -85,8 +85,8 @@ public class Add_food extends AppCompatActivity {
             });
 
             image.setOnClickListener(v -> {
-                    Intent inte = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    pickImage.launch(inte);
+                    Intent inten = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                    pickImage.launch(inten);
             });
 
             btnadd.setOnClickListener(new View.OnClickListener() {
@@ -116,7 +116,7 @@ public class Add_food extends AppCompatActivity {
                             return;
                         }
 
-                        AddRecipe(user, imageFile);
+                        AddRecipe(imageFile, recipeInfoJson, user);
 
                         btnadd.setEnabled(true);
 
@@ -204,7 +204,7 @@ public class Add_food extends AppCompatActivity {
         }
     }
 
-    private void AddRecipe(User user, File imageFile) {
+    private void AddRecipe(File imageFile, String recipeInfoJson, User user) {
         btnadd.setEnabled(false);
         if (imageFile == null) {
             Toast.makeText(this, "Vui lòng chọn ảnh", Toast.LENGTH_SHORT).show();
@@ -217,8 +217,12 @@ public class Add_food extends AppCompatActivity {
         RequestBody imageRequestBody = RequestBody.create(MediaType.parse(mimeType), imageFile);
 
         MultipartBody.Part imagePart = MultipartBody.Part.createFormData("image", imageFile.getName(), imageRequestBody);
+
+        RequestBody jsonRequestBody = RequestBody.create(
+                MediaType.parse("application/json"), recipeInfoJson
+        );
         RecipeApiService apiService = RetrofitClient.getRecipeApiService(this, user);
-        Call<ResponseBody> call = apiService.addRecipe(imagePart);
+        Call<ResponseBody> call = apiService.addRecipe(imagePart, jsonRequestBody);
 
         call.enqueue(new Callback<ResponseBody>() {
             @Override
@@ -241,7 +245,7 @@ public class Add_food extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(Add_food.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Add_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

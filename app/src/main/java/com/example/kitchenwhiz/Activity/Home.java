@@ -257,7 +257,7 @@ File imageFile;
 
             @Override
             public void onFailure(Call<RecipeModel> call, Throwable t) {
-
+                Toast.makeText(Home.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -391,7 +391,7 @@ File imageFile;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Home.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -412,7 +412,7 @@ File imageFile;
 
             @Override
             public void onFailure(Call<RandomFactResponse> call, Throwable t) {
-
+                Toast.makeText(Home.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -456,7 +456,7 @@ File imageFile;
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                Toast.makeText(Home.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

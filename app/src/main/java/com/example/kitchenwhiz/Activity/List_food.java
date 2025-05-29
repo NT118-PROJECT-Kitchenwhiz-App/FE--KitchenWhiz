@@ -138,7 +138,7 @@ TextView setnofound;
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(List_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
 
     });
@@ -176,7 +176,7 @@ TextView setnofound;
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(List_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -209,7 +209,7 @@ TextView setnofound;
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(List_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -245,7 +245,7 @@ TextView setnofound;
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(List_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -270,7 +270,7 @@ TextView setnofound;
 
             @Override
             public void onFailure(Call<List<RecipeModel>> call, Throwable t) {
-
+                Toast.makeText(List_food.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

@@ -83,15 +83,14 @@ EditText tbpass, tbcfpass;
                     startActivity(intent);
                 }
                 else{
-                    Log.d("RESETBODY", response.errorBody().toString());
-                    Toast.makeText(Reset_password.this, "Error", Toast.LENGTH_SHORT).show();
+                    Log.d("RESETPASS", response.errorBody().toString());
+                    Toast.makeText(Reset_password.this, "Lỗi", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("API RESET", "Failed: " + t.getMessage());
-                Toast.makeText(Reset_password.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Reset_password.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

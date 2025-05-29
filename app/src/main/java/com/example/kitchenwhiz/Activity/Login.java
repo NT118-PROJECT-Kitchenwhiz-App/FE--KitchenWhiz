@@ -104,7 +104,7 @@ SharedPreferences shared;
 
             @Override
             public void onFailure(Call<User> call, Throwable t) {
-
+                Toast.makeText(Login.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }

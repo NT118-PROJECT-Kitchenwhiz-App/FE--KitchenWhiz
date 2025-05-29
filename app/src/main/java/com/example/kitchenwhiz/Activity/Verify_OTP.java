@@ -94,8 +94,7 @@ public class Verify_OTP extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Log.e("API OTP", "Failed: " + t.getMessage());
-                Toast.makeText(Verify_OTP.this, "Không thể kết nối đến server: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Verify_OTP.this, "Không thể kết nối Internet", Toast.LENGTH_SHORT).show();
             }
         });
     }
