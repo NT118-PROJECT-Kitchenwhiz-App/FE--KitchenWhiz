@@ -9,6 +9,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,6 +35,7 @@ ListView listFood;
 EditText txt_Search;
 View noResultsLayout;
 TextView setnofound;
+ImageButton image_search;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,6 +93,18 @@ TextView setnofound;
             }
         });
 
+        image_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = txt_Search.getText().toString().trim().toLowerCase();
+
+                getRecipebyname(query, dishAdapter, arrDish, user);
+
+                InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(txt_Search.getWindowToken(), 0);
+            }
+        });
+
         listFood.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,6 +122,7 @@ TextView setnofound;
         txt_Search = findViewById(R.id.home_search);
         noResultsLayout = findViewById(R.id.no_results_layout);
         setnofound = findViewById(R.id.explains);
+        image_search = findViewById(R.id.image_search);
     }
 
     private void searchRecipe(String name, List<RecipeModel> arr, Dish_Adapter dishAdapter, User user){

@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -68,6 +69,7 @@ EditText tbSearch;
 ShapeableImageView avatar, image_food, popup_avatar;
 View viewRandomfood, viewCreatefood;
 ImageView favoriteIcon, recentlyIcon, suggestedIcon;
+ImageButton image_search;
 SharedPreferences shared;
 GifImageView fact_food;
 ActivityResultLauncher<Intent> pickImage;
@@ -98,6 +100,10 @@ File imageFile;
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_DOWN) {
                     String query = tbSearch.getText().toString().trim();
+                    if (query.isEmpty()) {
+                        Toast.makeText(Home.this, "Vui lòng nhập nội dung tìm kiếm", Toast.LENGTH_SHORT).show();
+                        return false;
+                    }
                     Intent intent = new Intent(Home.this, List_food.class);
                     intent.putExtra("search_query", query);
                     intent.putExtra("user", user);
@@ -106,6 +112,34 @@ File imageFile;
                     return true;
                 }
                 return false;
+            }
+        });
+
+        image_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = tbSearch.getText().toString().trim();
+                if (query.isEmpty()) {
+                    Toast.makeText(Home.this, "Vui lòng nhập nội dung tìm kiếm", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                Intent intent = new Intent(Home.this, List_food.class);
+                intent.putExtra("search_query", query);
+                intent.putExtra("user", user);
+                intent.putExtra("list", "search");
+                startActivity(intent);
+            }
+        });
+        
+        image_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String query = tbSearch.getText().toString().trim();
+                Intent intent = new Intent(Home.this, List_food.class);
+                intent.putExtra("search_query", query);
+                intent.putExtra("user", user);
+                intent.putExtra("list", "search");
+                startActivity(intent);
             }
         });
 
@@ -199,6 +233,7 @@ File imageFile;
         txthome_food = findViewById(R.id.txthome_food);
         txtdes = findViewById(R.id.txtdescrip_food);
         fact_food = findViewById(R.id.random_fact);
+        image_search = findViewById(R.id.image_search);
     }
 
     private void getTime(TextView txtwhattoeat) {
@@ -301,6 +336,11 @@ File imageFile;
         popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         popup_avatar = popupView.findViewById(R.id.popup_ava);
+        Glide.with(this)
+                .load(user.getAvatar_url())
+                .placeholder(R.drawable.loading_icon)
+                .error(R.drawable.error)
+                .into(popup_avatar);
         TextView txt_username_popup = popupView.findViewById(R.id.popup_username);
         Button changeava = popupView.findViewById(R.id.button_changepass);
         Button logout = popupView.findViewById(R.id.button_logout);
