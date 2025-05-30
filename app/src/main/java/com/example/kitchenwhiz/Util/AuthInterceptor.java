@@ -37,8 +37,6 @@ import retrofit2.Callback;
 
         @Override
         public Response intercept(Chain chain) throws IOException {
-
-            Log.d("GET TOKEN", jwtUtil.getToken());
             Request originalRequest = chain.request();
             String requestUrl = originalRequest.url().encodedPath();
 
