@@ -139,7 +139,7 @@ ImageButton image_search;
                     if (arr.isEmpty()) {
                         listFood.setVisibility(View.GONE);
                         noResultsLayout.setVisibility(View.VISIBLE);
-                        setnofound.setText("Có vẻ bạn chưa\nyêu thích món ăn nào");
+                        setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
                     }
                     else {
                         listFood.setVisibility(View.VISIBLE);
@@ -147,6 +147,11 @@ ImageButton image_search;
                     }
                 }
                 else {
+                    arr.clear();
+                    dishAdapter.updateRecipes(arr);
+                    listFood.setVisibility(View.GONE);
+                    noResultsLayout.setVisibility(View.VISIBLE);
+                    setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
                     Toast.makeText(List_food.this, response.message(), Toast.LENGTH_SHORT);
                 }
             }
@@ -207,7 +212,7 @@ ImageButton image_search;
                     if (arr.isEmpty()) {
                         listFood.setVisibility(View.GONE);
                         noResultsLayout.setVisibility(View.VISIBLE);
-                        setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
+                        setnofound.setText("Có vẻ như bạn chưa từng\nxem món ăn nào");
                     } else {
                         listFood.setVisibility(View.VISIBLE);
                         noResultsLayout.setVisibility(View.GONE);
@@ -218,7 +223,7 @@ ImageButton image_search;
                     dishAdapter.updateRecipes(arr);
                     listFood.setVisibility(View.GONE);
                     noResultsLayout.setVisibility(View.VISIBLE);
-                    setnofound.setText("Hãy thử kiếm tra chính tả hoặc\ncó vẻ món ăn đó chúng tôi chưa biết tới");
+                    setnofound.setText("Có vẻ như bạn chưa từng\nxem món ăn nào");
                 }
             }
 
